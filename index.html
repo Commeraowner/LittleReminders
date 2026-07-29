@@ -161,110 +161,35 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .typewrap{min-height:66px;}
 
 /* =========================================================
-   PAGE 3 — CUTE PERSIAN CAT ILLUSTRATION & PET MECHANIC
+   PAGE 3 — SVG-STYLIZED HAND-DRAWN PERSIAN CAT
    ========================================================= */
 .cat-stage{margin:18px auto 6px;position:relative;width:min(68vw,250px);}
 .cat-tap-hint{font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-top:12px;opacity:.85;transition:opacity .3s ease;}
 .cat-tap-hint.fade{opacity:0;}
 .cat{position:relative;width:100%;aspect-ratio:1/1;cursor:pointer;touch-action:manipulation;user-select:none;}
 
-/* Ground Shadow */
-.cat-shadow{position:absolute;left:50%;bottom:2%;width:68%;height:9%;background:radial-gradient(ellipse at center, rgba(150,84,94,.28) 0%, transparent 75%);transform:translateX(-50%);z-index:0;}
+/* SVG Cat Styling */
+.svg-cat{width:100%;height:100%;overflow:visible;}
+.cat-stroke{stroke:#6b3e2e;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;fill:none;}
+.cat-fill{fill:#ffffff;}
+.cat-eye-fill{fill:#6b3e2e;}
 
-/* Extra Fluffy Tail */
-.cat-tail{position:absolute;right:-6%;bottom:18%;width:36%;height:52%;z-index:1;
-  transform-origin:10% 90%;transform:rotate(12deg);
-  animation:tailSway 2.8s ease-in-out infinite;}
-.cat-tail .puff{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%, #ffffff, #f7ebed 65%, #eecbd1 100%);box-shadow:inset -2px -3px 5px rgba(183,110,121,.15);}
-.cat-tail .puff:nth-child(1){width:62%;height:48%;left:15%;bottom:0;}
-.cat-tail .puff:nth-child(2){width:54%;height:42%;left:22%;bottom:28%;}
-.cat-tail .puff:nth-child(3){width:46%;height:36%;left:28%;bottom:54%;}
-.cat-tail .puff:nth-child(4){width:36%;height:30%;left:32%;bottom:74%;}
-@keyframes tailSway{0%,100%{transform:rotate(8deg);}50%{transform:rotate(-12deg);}}
-.cat.stage2 .cat-tail,.cat.stage3 .cat-tail{animation:tailWag 0.9s ease-in-out infinite;}
-@keyframes tailWag{0%,100%{transform:rotate(20deg);}50%{transform:rotate(-15deg);}}
+/* Tail animation */
+.svg-tail{transform-origin: 180px 180px; animation: svgTailSway 2.8s ease-in-out infinite;}
+@keyframes svgTailSway{0%,100%{transform:rotate(4deg);}50%{transform:rotate(-8deg);}}
+.cat.stage2 .svg-tail, .cat.stage3 .svg-tail{animation: svgTailWag 0.8s ease-in-out infinite;}
+@keyframes svgTailWag{0%,100%{transform:rotate(12deg);}50%{transform:rotate(-12deg);}}
 
-/* Round Chubby Body */
-.cat-body{position:absolute;bottom:0;left:8%;width:84%;height:52%;z-index:2;
-  background:radial-gradient(ellipse at 50% 20%, #ffffff 0%, #faeff1 55%, #f2dbe0 100%);
-  border-radius:50% 50% 48% 48%;
-  box-shadow:inset 0 -10px 18px -8px rgba(183,110,121,.2);}
-/* Little Front Paws */
-.cat-paws{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:52%;height:22%;z-index:5;display:flex;justify-content:space-between;}
-.cat-paw{width:42%;height:100%;background:radial-gradient(circle at 50% 30%, #ffffff, #faeff1 80%);border-radius:50% 50% 45% 45%;box-shadow:0 3px 6px rgba(183,110,121,.15);}
+/* Head motion on pet */
+.svg-head{transform-origin: 110px 90px; transition: transform .2s ease;}
 
-/* Fluffy Chest Ruff */
-.cat-ruff{position:absolute;bottom:18%;left:16%;width:68%;height:34%;z-index:3;
-  background:radial-gradient(ellipse at 50% 0%, #ffffff 0%, #fdf2f4 70%, transparent 100%);
-  border-radius:50%;}
+/* Blink Effect */
+.cat.blink .svg-eye{transform: scaleY(0.1); transform-origin: center;}
 
-/* Extra Cute Persian Face */
-.cat-head{position:absolute;top:0%;left:8%;width:84%;height:68%;z-index:4;
-  background:radial-gradient(ellipse at 45% 35%, #ffffff 0%, #faeff1 55%, #f2dbe0 100%);
-  border-radius:52% 52% 48% 48%;
-  box-shadow:inset 0 -8px 14px -6px rgba(183,110,121,.16);
-  transition:transform .2s ease;}
-
-/* Cheek Tufts for Persian Fluffiness */
-.cat-cheek-fluff{position:absolute;bottom:10%;width:28%;height:36%;border-radius:50%;
-  background:radial-gradient(circle at 50% 50%, #ffffff, #f7ebed 80%);}
-.cat-cheek-fluff.left{left:-8%;transform:rotate(-15deg);}
-.cat-cheek-fluff.right{right:-8%;transform:rotate(15deg);}
-
-/* Ears */
-.cat-ear{position:absolute;top:-6%;width:30%;height:34%;z-index:3;
-  background:radial-gradient(circle at 40% 30%, #fdf2f4, #eed3d8 85%);
-  border-radius:60% 40% 60% 60%;}
-.cat-ear.left{left:2%;transform:rotate(-20deg);}
-.cat-ear.right{right:2%;transform:rotate(20deg) scaleX(-1);}
-.cat-ear-inner{position:absolute;top:28%;left:25%;width:50%;height:50%;background:var(--rose-gold-light);border-radius:60% 30% 60% 60%;opacity:.8;}
-
-/* Big Cute Anime/Chibi Eyes */
-.cat-eye{position:absolute;top:38%;width:17%;height:22%;background:#3d2b33;border-radius:50%;z-index:6;transition:all .2s ease;}
-.cat-eye::before{content:'';position:absolute;top:12%;left:18%;width:42%;height:42%;background:#ffffff;border-radius:50%;}
-.cat-eye::after{content:'';position:absolute;bottom:18%;right:18%;width:22%;height:22%;background:#ffffff;border-radius:50%;}
-.cat-eye.left{left:23%;}
-.cat-eye.right{right:23%;}
-
-/* Eye States for petting */
-.cat.blink .cat-eye{transform:scaleY(.08);}
-.cat.stage2 .cat-eye, .cat.stage3 .cat-eye{
-  height:18%;border-radius:50% 50% 10% 10%;background:#3d2b33;
-}
-.cat.stage2 .cat-eye::before, .cat.stage3 .cat-eye::before{top:10%;left:20%;width:50%;height:50%;}
-
-/* Cute Rosy Blush */
-.cat-cheek-blush{position:absolute;top:54%;width:22%;height:14%;background:linear-gradient(135deg, #f7a8b8, #e8b4bc);border-radius:50%;opacity:0.4;filter:blur(1px);z-index:5;transition:opacity .4s ease, transform .3s ease;}
-.cat-cheek-blush.left{left:10%;}
-.cat-cheek-blush.right{right:10%;}
-.cat.stage2 .cat-cheek-blush,.cat.stage3 .cat-cheek-blush{opacity:.85;transform:scale(1.15);}
-
-/* Tiny Cute Button Nose & Mouth */
-.cat-nose{position:absolute;top:53%;left:50%;width:7.5%;height:5.5%;background:#b85c6d;border-radius:45% 45% 50% 50%;transform:translateX(-50%);z-index:6;}
-.cat-mouth{position:absolute;top:59%;left:50%;width:16%;height:9%;border-bottom:2px solid #b85c6d;border-radius:0 0 50% 50%;transform:translateX(-50%);z-index:6;transition:all .3s ease;}
-.cat.stage2 .cat-mouth,.cat.stage3 .cat-mouth{width:22%;height:14%;border-bottom-width:2.5px;border-radius:0 0 60% 60%;}
-
-/* Little Whiskers */
-.cat-whisker{position:absolute;top:56%;height:1.5px;background:rgba(90,63,69,.25);z-index:5;}
-.cat-whisker.l1{left:-2%;width:18%;transform:rotate(-6deg);}
-.cat-whisker.l2{left:-2%;top:61%;width:18%;transform:rotate(2deg);}
-.cat-whisker.r1{right:-2%;width:18%;transform:rotate(6deg);}
-.cat-whisker.r2{right:-2%;top:61%;width:18%;transform:rotate(-2deg);}
-
-/* Purr Motion Lines */
-.cat-purr-line{position:absolute;border-radius:2px;background:rgba(183,110,121,.4);opacity:0;}
-.cat.stage3 .cat-purr-line{animation:purrPulse 0.9s ease-in-out infinite;}
-.cat-purr-line.p1{top:28%;left:-8%;width:12%;height:2px;animation-delay:0s;}
-.cat-purr-line.p2{top:34%;left:-11%;width:8%;height:2px;animation-delay:.15s;}
-.cat-purr-line.p3{top:28%;right:-8%;width:12%;height:2px;animation-delay:.3s;}
-.cat-purr-line.p4{top:34%;right:-11%;width:8%;height:2px;animation-delay:.45s;}
-@keyframes purrPulse{0%,100%{opacity:0;transform:translateX(0);}50%{opacity:.85;transform:translateX(-3px);}}
-
-/* Petting Hand FX */
+/* Petting & Hearts */
 .pet-heart-float{position:absolute;pointer-events:none;color:var(--rose-gold);font-size:16px;z-index:20;animation:floatUpHeart 0.9s ease-out forwards;}
 @keyframes floatUpHeart{0%{opacity:1;transform:translate(-50%, 0) scale(0.6) rotate(0deg);}100%{opacity:0;transform:translate(-50%, -45px) scale(1.2) rotate(15deg);}}
 
-.cat-sticker-burst{position:absolute;font-size:0;pointer-events:none;z-index:6;}
 .badge{display:inline-block;margin-top:16px;padding:9px 20px;border-radius:999px;background:var(--lavender);color:var(--ink);
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(8px);
   transition:all .5s cubic-bezier(.16,1,.3,1);}
@@ -441,11 +366,11 @@ img,svg,canvas{max-width:100%;}
   <p>loading a little something</p>
 </div>
 
-<button id="musicToggle" aria-label="Toggle music" title="Toggle music">
+<button id="musicToggle" class="muted" aria-label="Toggle music" title="Toggle music">
   <div class="bars"><span></span><span></span><span></span></div>
 </button>
 
-<!-- HTML5 Audio Element using uploaded track -->
+<!-- Background Music Track -->
 <audio id="bgAudio" loop preload="auto">
   <source src="audio.mp3" type="audio/mpeg">
 </audio>
@@ -474,39 +399,53 @@ img,svg,canvas{max-width:100%;}
     </div>
   </section>
 
-  <!-- PAGE 3: Cute Persian cat inspection & Petting -->
+  <!-- PAGE 3: Fluffy Hand-Drawn Persian Cat -->
   <section class="page" data-page="3">
     <div class="card">
       <div class="eyebrow">university entry requirement</div>
       <h1 class="title">You must pet the Persian kitty.</h1>
       <div class="cat-stage">
-        <div class="cat-shadow"></div>
         <div class="cat" id="cat">
-          <div class="cat-tail"><div class="puff"></div><div class="puff"></div><div class="puff"></div><div class="puff"></div></div>
-          <div class="cat-purr-line p1"></div><div class="cat-purr-line p2"></div>
-          <div class="cat-purr-line p3"></div><div class="cat-purr-line p4"></div>
-          <div class="cat-body"></div>
-          <div class="cat-ruff"></div>
-          <div class="cat-ear left"><div class="cat-ear-inner"></div></div>
-          <div class="cat-ear right"><div class="cat-ear-inner"></div></div>
-          <div class="cat-head" id="catHead">
-            <div class="cat-cheek-fluff left"></div>
-            <div class="cat-cheek-fluff right"></div>
-            <div class="cat-whisker l1"></div><div class="cat-whisker l2"></div>
-            <div class="cat-whisker r1"></div><div class="cat-whisker r2"></div>
-            <div class="cat-eye left"></div>
-            <div class="cat-eye right"></div>
-            <div class="cat-cheek-blush left"></div>
-            <div class="cat-cheek-blush right"></div>
-            <div class="cat-nose"></div>
-            <div class="cat-mouth"></div>
-          </div>
-          <div class="cat-paws">
-            <div class="cat-paw"></div>
-            <div class="cat-paw"></div>
-          </div>
+          <svg class="svg-cat" viewBox="0 0 220 220">
+            <!-- Tail -->
+            <g class="svg-tail">
+              <path class="cat-fill cat-stroke" d="M 160 170 C 185 160 215 110 195 65 C 180 30 155 70 160 110 C 163 135 145 160 135 175 Z" />
+              <!-- Fluffy tail outline tufts -->
+              <path class="cat-stroke" d="M 195 65 C 198 75 190 85 192 95 C 196 108 184 118 185 128" />
+            </g>
+
+            <!-- Main Body Fluff -->
+            <path class="cat-fill cat-stroke" d="M 55 110 C 35 115 20 135 25 155 C 15 165 20 185 35 195 C 50 205 150 205 165 195 C 180 185 185 165 175 155 C 180 135 165 115 145 110 Z" />
+
+            <!-- Body Side Tuft Details -->
+            <path class="cat-stroke" d="M 22 135 L 35 140 M 18 152 L 32 155 M 24 168 L 38 168" />
+            <path class="cat-stroke" d="M 178 135 L 165 140 M 182 152 L 168 155 M 176 168 L 162 168" />
+
+            <!-- Chest & Paw Fur Lines -->
+            <path class="cat-stroke" d="M 68 130 C 60 145 78 155 75 165 C 70 150 85 138 88 128" />
+
+            <!-- Front Paws -->
+            <path class="cat-fill cat-stroke" d="M 80 160 L 72 200 C 80 202 95 202 100 198 L 94 160 Z" />
+            <path class="cat-fill cat-stroke" d="M 120 160 L 112 198 C 120 202 135 202 143 200 L 134 160 Z" />
+
+            <!-- Head Group -->
+            <g class="svg-head" id="catHeadGroup">
+              <!-- Head Silhouette -->
+              <path class="cat-fill cat-stroke" d="M 55 45 C 50 20 62 18 70 30 C 90 20 110 20 130 30 C 138 18 150 20 145 45 C 170 55 170 85 150 100 C 135 112 65 112 50 100 C 30 85 30 55 55 45 Z" />
+
+              <!-- Side Cheek Tufts -->
+              <path class="cat-stroke" d="M 32 55 L 48 60 M 26 68 L 44 70 M 34 80 L 48 78" />
+              <path class="cat-stroke" d="M 168 55 L 152 60 M 174 68 L 156 70 M 166 80 L 152 78" />
+
+              <!-- Eyes -->
+              <ellipse class="cat-eye-fill svg-eye" cx="72" cy="65" rx="6.5" ry="8" />
+              <ellipse class="cat-eye-fill svg-eye" cx="128" cy="65" rx="6.5" ry="8" />
+
+              <!-- Inverted V Mouth -->
+              <path class="cat-stroke" d="M 94 68 L 100 63 L 106 68" />
+            </g>
+          </svg>
         </div>
-        <div class="cat-sticker-burst" id="catBurst"></div>
       </div>
       <p class="cat-tap-hint" id="catHint">gently pet the kitty</p>
       <p class="cat-stage-label" id="catStageLabel"></p>
@@ -882,7 +821,7 @@ setTimeout(()=>document.getElementById('loader').classList.add('hide'), 2500);
    PAGE 3: PET THE KITTY MECHANIC
    ========================================================= */
 const cat = document.getElementById('cat');
-const catHead = document.getElementById('catHead');
+const catHeadGroup = document.getElementById('catHeadGroup');
 const catBadge = document.getElementById('catBadge');
 const catHint = document.getElementById('catHint');
 const catStageLabel = document.getElementById('catStageLabel');
@@ -920,8 +859,8 @@ function handlePet(e){
   spawnPetHeart(e);
   
   // Head tilt on pet
-  catHead.style.transform = `scale(0.96) translateY(4px) rotate(${petClicks % 2 === 0 ? 3 : -3}deg)`;
-  setTimeout(()=>{ catHead.style.transform = 'scale(1) translateY(0) rotate(0deg)'; }, 180);
+  catHeadGroup.style.transform = `scale(0.96) translateY(4px) rotate(${petClicks % 2 === 0 ? 4 : -4}deg)`;
+  setTimeout(()=>{ catHeadGroup.style.transform = 'scale(1) translateY(0) rotate(0deg)'; }, 180);
 
   if(petClicks === 1){
     catStage = 1;
@@ -1337,39 +1276,43 @@ const gamePageObserver = new MutationObserver(()=>{
 gamePageObserver.observe(document.querySelector('.page[data-page="10"]'), {attributes:true, attributeFilter:['class']});
 
 /* =========================================================
-   BACKGROUND AUDIO (HTML5 Audio)
+   BACKGROUND AUDIO (HTML5 Audio + Toggle)
    ========================================================= */
 const bgAudio = document.getElementById('bgAudio');
 const musicToggle = document.getElementById('musicToggle');
 let musicStarted = false;
-let musicMuted = false;
 
-function playAudio(){
-  if(!musicStarted){
-    musicStarted = true;
-    bgAudio.play().then(()=>{
+function startAudio() {
+  if (!musicStarted) {
+    bgAudio.play().then(() => {
+      musicStarted = true;
       musicToggle.classList.remove('muted');
-    }).catch(err=>{
-      console.log("Audio playback error:", err);
+    }).catch(err => {
+      console.log("Autoplay prevented:", err);
     });
   }
 }
 
-document.addEventListener('click', playAudio, {once:true});
-document.addEventListener('touchstart', playAudio, {once:true});
+// Play audio on first user interaction anywhere on the page
+document.addEventListener('click', startAudio, { once: true });
+document.addEventListener('touchstart', startAudio, { once: true });
 
-musicToggle.addEventListener('click', (e)=>{
+// Explicit Toggle Button Handler
+musicToggle.addEventListener('click', (e) => {
   e.stopPropagation();
-  if(!musicStarted){
-    playAudio();
-    return;
+  if (bgAudio.paused) {
+    bgAudio.play().then(() => {
+      musicStarted = true;
+      musicToggle.classList.remove('muted');
+    });
+  } else {
+    bgAudio.pause();
+    musicToggle.classList.add('muted');
   }
-  musicMuted = !musicMuted;
-  bgAudio.muted = musicMuted;
-  musicToggle.classList.toggle('muted', musicMuted);
 });
 
 })();
 </script>
 </body>
 </html>
+
