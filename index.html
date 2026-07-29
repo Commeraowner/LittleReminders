@@ -443,8 +443,9 @@ img,svg,canvas{max-width:100%;}
   <div class="bars"><span></span><span></span><span></span></div>
 </button>
 
-<!-- Hidden YouTube player used purely as an audio source for the instrumental track -->
-<div id="ytPlayer" style="position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;bottom:0;left:0;"></div>
+<audio id="bgMusic" loop>
+  <source src="Until.mp3" type="audio/mpeg">
+</audio>
 
 <div class="progress-dots" id="dots"></div>
 
@@ -632,7 +633,6 @@ This isn't a goodbye, just a little reminder that somewhere out here, someone is
 
 </main>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 (function(){
 "use strict";
@@ -1217,171 +1217,160 @@ window.addEventListener('resize', ()=>{ if(gameStarted) resizeGame(); });
 
 function spawnItem(){
   const kind = Math.random()>0.5 ? 'heart' : 'star';
-  items.push({ x: 20+Math.random()*(gW-40), y:-16, kind, speed: 1.2+Math.random()*1.1+score*0.01, size: 12+Math.random()*4 });
+  items.push({
+    kind,
+    x: 0.1 + Math.random()*0.8,
+    y: -0.05,
+    speed: 0.0003 + Math.random()*0.00025,
+    size: 22,
+    rot: Math.random()*Math.PI*2,
+    rotSpeed: (Math.random()-0.5)*0.04
+  });
 }
 
-function drawPixelHeartCanvas(x,y,s,color){
-  const pat = HEART_PATTERN; const unit = s/7;
-  gctx.fillStyle = color;
-  pat.forEach((row,ry)=>{ for(let rx=0;rx<row.length;rx++){ if(row[rx]!=='.') gctx.fillRect(x+rx*unit,y+ry*unit,unit+0.5,unit+0.5); } });
-}
-function drawPixelStarCanvas(x,y,s,color){
-  const pat = STAR_PATTERN; const unit = s/5;
-  gctx.fillStyle = color;
-  pat.forEach((row,ry)=>{ for(let rx=0;rx<row.length;rx++){ if(row[rx]!=='.') gctx.fillRect(x+rx*unit,y+ry*unit,unit+0.5,unit+0.5); } });
-}
-function drawCatcher(){
-  const cw = 54, ch = 40;
-  const cx = catcherX*gW - cw/2;
-  const cy = gH - ch - 6;
-  // body
-  gctx.fillStyle = '#f6dde1';
-  gctx.beginPath();
-  gctx.ellipse(cx+cw/2, cy+ch*0.62, cw*0.46, ch*0.42, 0, 0, Math.PI*2);
-  gctx.fill();
-  // ears
-  gctx.fillStyle = '#f6dde1';
-  gctx.beginPath(); gctx.moveTo(cx+cw*0.18,cy+ch*0.32); gctx.lineTo(cx+cw*0.05,cy-ch*0.08); gctx.lineTo(cx+cw*0.34,cy+ch*0.18); gctx.closePath(); gctx.fill();
-  gctx.beginPath(); gctx.moveTo(cx+cw*0.82,cy+ch*0.32); gctx.lineTo(cx+cw*0.95,cy-ch*0.08); gctx.lineTo(cx+cw*0.66,cy+ch*0.18); gctx.closePath(); gctx.fill();
-  // inner ears
-  gctx.fillStyle = '#e8b4bc';
-  gctx.beginPath(); gctx.moveTo(cx+cw*0.20,cy+ch*0.26); gctx.lineTo(cx+cw*0.13,cy+ch*0.02); gctx.lineTo(cx+cw*0.30,cy+ch*0.18); gctx.closePath(); gctx.fill();
-  gctx.beginPath(); gctx.moveTo(cx+cw*0.80,cy+ch*0.26); gctx.lineTo(cx+cw*0.87,cy+ch*0.02); gctx.lineTo(cx+cw*0.70,cy+ch*0.18); gctx.closePath(); gctx.fill();
-  // face
-  gctx.fillStyle = '#fff9f7';
-  gctx.beginPath(); gctx.ellipse(cx+cw/2, cy+ch*0.42, cw*0.34, ch*0.32, 0, 0, Math.PI*2); gctx.fill();
-  // eyes
-  gctx.fillStyle = '#4a3540';
-  gctx.beginPath(); gctx.arc(cx+cw*0.4, cy+ch*0.4, 2.4, 0, Math.PI*2); gctx.fill();
-  gctx.beginPath(); gctx.arc(cx+cw*0.6, cy+ch*0.4, 2.4, 0, Math.PI*2); gctx.fill();
-  // nose
-  gctx.fillStyle = '#c96b78';
-  gctx.beginPath(); gctx.arc(cx+cw*0.5, cy+ch*0.48, 1.6, 0, Math.PI*2); gctx.fill();
-  return { x: cx, y: cy, w: cw, h: ch };
-}
-
-function gameLoop(ts){
+function updateGame(now){
   if(!gameRunning) return;
-  gctx.clearRect(0,0,gW,gH);
-  if(ts - lastSpawn > spawnInterval){
+  if(now - lastSpawn > spawnInterval){
     spawnItem();
-    lastSpawn = ts;
-    spawnInterval = Math.max(480, spawnInterval - 6);
+    lastSpawn = now;
+    spawnInterval = Math.max(450, spawnInterval*0.985);
   }
-  const catcher = drawCatcher();
-  for(let i=items.length-1;i>=0;i--){
+
+  items.forEach(it=>{
+    it.y += it.speed * 16;
+    it.rot += it.rotSpeed;
+  });
+
+  const catY = 0.84;
+  const catR = 0.09;
+  for(let i=items.length-1; i>=0; i--){
     const it = items[i];
-    it.y += it.speed;
-    if(it.kind==='heart') drawPixelHeartCanvas(it.x-it.size/2, it.y-it.size/2, it.size, '#e8b4bc');
-    else drawPixelStarCanvas(it.x-it.size/2, it.y-it.size/2, it.size, '#c9b8e8');
-    const caught = it.y > catcher.y-6 && it.y < catcher.y+catcher.h && it.x > catcher.x && it.x < catcher.x+catcher.w;
-    if(caught){
-      score++;
+    const dx = it.x - catcherX;
+    const dy = it.y - catY;
+    const dist = Math.hypot(dx, dy);
+    if(dist < catR){
+      score += (it.kind==='heart' ? 10 : 15);
       scoreEl.textContent = score;
-      const canvasRect = gameCanvas.getBoundingClientRect();
-      burstAt(canvasRect.left+it.x, canvasRect.top+it.y, 4);
-      vibe(6);
+      vibe(12);
+      burstAt(it.x*gW, it.y*gH, 4);
       items.splice(i,1);
-      continue;
+    } else if(it.y > 1.1){
+      items.splice(i,1);
     }
-    if(it.y > gH+20) items.splice(i,1);
   }
-  requestAnimationFrame(gameLoop);
+
+  drawGame();
+  requestAnimationFrame(updateGame);
 }
 
-function setCatcherFromClientX(clientX){
+function drawGame(){
+  gctx.clearRect(0,0,gW,gH);
+
+  items.forEach(it=>{
+    const px = it.x * gW, py = it.y * gH;
+    gctx.save();
+    gctx.translate(px, py);
+    gctx.rotate(it.rot);
+    if(it.kind==='heart'){
+      gctx.fillStyle='#c96b78';
+      const s = 10;
+      gctx.beginPath();
+      gctx.moveTo(0, s*0.35);
+      gctx.bezierCurveTo(-s, -s*0.6, -s*1.6, s*0.5, 0, s*1.4);
+      gctx.bezierCurveTo(s*1.6, s*0.5, s, -s*0.6, 0, s*0.35);
+      gctx.fill();
+    } else {
+      gctx.fillStyle='#e8b4bc';
+      const r = 8;
+      gctx.beginPath();
+      for(let k=0; k<5; k++){
+        const a1 = (k*72 - 90)*Math.PI/180;
+        const a2 = (k*72 + 36 - 90)*Math.PI/180;
+        gctx.lineTo(Math.cos(a1)*r, Math.sin(a1)*r);
+        gctx.lineTo(Math.cos(a2)*(r*0.45), Math.sin(a2)*(r*0.45));
+      }
+      gctx.closePath();
+      gctx.fill();
+    }
+    gctx.restore();
+  });
+
+  const cx = catcherX * gW;
+  const cy = 0.86 * gH;
+  const cw = Math.min(70, gW*0.18);
+  gctx.fillStyle='#fbecef';
+  gctx.beginPath();
+  gctx.arc(cx, cy, cw*0.5, 0, Math.PI*2);
+  gctx.fill();
+  gctx.fillStyle='#eec3cb';
+  gctx.beginPath();
+  gctx.arc(cx - cw*0.32, cy - cw*0.35, cw*0.18, 0, Math.PI*2);
+  gctx.arc(cx + cw*0.32, cy - cw*0.35, cw*0.18, 0, Math.PI*2);
+  gctx.fill();
+  gctx.fillStyle='#4a3540';
+  gctx.beginPath();
+  gctx.arc(cx - cw*0.16, cy - cw*0.05, cw*0.07, 0, Math.PI*2);
+  gctx.arc(cx + cw*0.16, cy - cw*0.05, cw*0.07, 0, Math.PI*2);
+  gctx.fill();
+  gctx.fillStyle='#96545e';
+  gctx.beginPath();
+  gctx.arc(cx, cy + cw*0.08, cw*0.05, 0, Math.PI*2);
+  gctx.fill();
+}
+
+function moveCatcher(clientX){
   const rect = gameCanvas.getBoundingClientRect();
-  catcherX = Math.max(0, Math.min(1, (clientX-rect.left)/rect.width));
+  const relX = (clientX - rect.left)/rect.width;
+  catcherX = Math.max(0.1, Math.min(0.9, relX));
 }
-gameCanvas.addEventListener('pointerdown', e=>setCatcherFromClientX(e.clientX));
-gameCanvas.addEventListener('pointermove', e=>{ if(e.buttons>0 || e.pointerType==='touch') setCatcherFromClientX(e.clientX); });
-gameCanvas.addEventListener('touchmove', e=>{ if(e.touches[0]) setCatcherFromClientX(e.touches[0].clientX); }, {passive:true});
+
+gameCanvas.addEventListener('pointermove', e=>moveCatcher(e.clientX));
+gameCanvas.addEventListener('touchmove', e=>{
+  if(e.touches[0]) moveCatcher(e.touches[0].clientX);
+},{passive:true});
+
 window.addEventListener('keydown', e=>{
-  if(!gameRunning) return;
-  if(e.key==='ArrowLeft') catcherX = Math.max(0, catcherX-0.05);
-  if(e.key==='ArrowRight') catcherX = Math.min(1, catcherX+0.05);
+  if(pages[current].dataset.page !== '10') return;
+  if(e.key==='ArrowLeft') catcherX = Math.max(0.1, catcherX-0.06);
+  if(e.key==='ArrowRight') catcherX = Math.min(0.9, catcherX+0.06);
 });
 
-function startGameIfNeeded(){
-  if(gameStarted) return;
-  gameStarted = true;
-  resizeGame();
-  gameRunning = true;
-  lastSpawn = performance.now();
-  requestAnimationFrame(gameLoop);
-}
-/* start the endless game once its page becomes active */
-const gamePageObserver = new MutationObserver(()=>{
-  const gamePage = document.querySelector('.page[data-page="10"]');
-  if(gamePage.classList.contains('active')) startGameIfNeeded();
+const page10Observer = new MutationObserver(()=>{
+  if(pages[current].dataset.page === '10' && !gameStarted){
+    gameStarted = true;
+    resizeGame();
+    gameRunning = true;
+    requestAnimationFrame(updateGame);
+  }
 });
-gamePageObserver.observe(document.querySelector('.page[data-page="10"]'), {attributes:true, attributeFilter:['class']});
+page10Observer.observe(dotsWrap, {attributes:true, subtree:true, childList:true});
 
-/* =========================================================
-   MUSIC: YouTube IFrame API used as an audio-only source
-   ("Until I Found You - Instrumental" — https://youtu.be/l6RBDcfxJac)
-   Handles autoplay restrictions by starting muted, then unmuting
-   and fading the volume in on the user's first tap/click/touch.
-   ========================================================= */
-const YT_VIDEO_ID = 'l6RBDcfxJac';
-const TARGET_VOLUME = 32; // 0-100, kept low + romantic
-let ytPlayer = null;
-let ytReady = false;
-let musicStarted = false;
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("musicToggle");
+
+bgMusic.volume = 0.32;
+
 let musicMuted = false;
 
-window.onYouTubeIframeAPIReady = function(){
-  ytPlayer = new YT.Player('ytPlayer', {
-    height: '1', width: '1', videoId: YT_VIDEO_ID,
-    playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: YT_VIDEO_ID, playsinline: 1, disablekb: 1, fs: 0 },
-    events: {
-      onReady: function(ev){
-        ytReady = true;
-        try{ ev.target.setVolume(0); ev.target.playVideo(); }catch(e){}
-      },
-      onError: function(){ /* fail silently, never break the page */ }
-    }
-  });
-};
-
-function fadeInMusic(){
-  if(!ytPlayer || !ytReady) return;
-  try{
-    ytPlayer.unMute();
-    let v = 0;
-    const iv = setInterval(()=>{
-      v += 2;
-      try{ ytPlayer.setVolume(Math.min(TARGET_VOLUME, v)); }catch(e){}
-      if(v>=TARGET_VOLUME) clearInterval(iv);
-    }, 90);
-  }catch(e){}
-}
-
 function startMusic(){
-  if(musicStarted) return;
-  musicStarted = true;
-  const tryStart = ()=>{
-    if(ytReady){ fadeInMusic(); }
-    else{ setTimeout(tryStart, 300); }
-  };
-  tryStart();
-  document.removeEventListener('click', startMusic);
-  document.removeEventListener('touchstart', startMusic);
+  bgMusic.play().catch(()=>{});
 }
-document.addEventListener('click', startMusic, {once:true});
-document.addEventListener('touchstart', startMusic, {once:true});
 
-/* manual music toggle, works even before the first tap above */
-const musicToggle = document.getElementById('musicToggle');
-musicToggle.addEventListener('click', (e)=>{
+document.addEventListener("click", startMusic, {once:true});
+document.addEventListener("touchstart", startMusic, {once:true});
+
+musicToggle.addEventListener("click", function(e){
   e.stopPropagation();
-  startMusic();
-  if(!ytPlayer || !ytReady) return;
+
   musicMuted = !musicMuted;
-  musicToggle.classList.toggle('muted', musicMuted);
-  try{
-    if(musicMuted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(TARGET_VOLUME); }
-  }catch(e){}
+
+  if(musicMuted){
+    bgMusic.pause();
+    musicToggle.classList.add("muted");
+  } else {
+    bgMusic.play();
+    musicToggle.classList.remove("muted");
+  }
 });
 
 })();
