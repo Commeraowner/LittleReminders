@@ -45,6 +45,9 @@ button{font-family:'Poppins',sans-serif;border:none;background:none;}
 button, [role="button"]{-webkit-user-select:none;user-select:none;}
 ::selection{background:var(--rose-gold-light);color:var(--ink);}
 
+/* Force-lock the palette regardless of OS / browser dark mode.
+   Everything below simply re-declares the same light tokens inside
+   a prefers-color-scheme:dark query so nothing can flip. */
 @media (prefers-color-scheme: dark){
   :root{
     color-scheme: light only;
@@ -70,7 +73,7 @@ button, [role="button"]{-webkit-user-select:none;user-select:none;}
 }
 
 /* =========================================================
-   CSS-DRAWN ICONS
+   CSS-DRAWN ICONS (no emoji anywhere)
    ========================================================= */
 .icon-heart{position:relative;display:inline-block;width:1em;height:0.9em;transform:translateY(0.05em);}
 .icon-heart::before,.icon-heart::after{content:'';position:absolute;top:0;width:0.52em;height:0.82em;background:currentColor;border-radius:0.5em 0.5em 0 0;}
@@ -168,8 +171,10 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .cat-tap-hint.fade{opacity:0;}
 .cat{position:relative;width:100%;aspect-ratio:1/1;cursor:pointer;touch-action:manipulation;}
 
+/* soft ground shadow */
 .cat-shadow{position:absolute;left:50%;bottom:2%;width:62%;height:8%;background:radial-gradient(ellipse at center, rgba(150,84,94,.25) 0%, transparent 75%);transform:translateX(-50%);z-index:0;}
 
+/* fluffy tail — layered puffs */
 .cat-tail{position:absolute;right:-4%;bottom:20%;width:32%;height:46%;z-index:1;
   transform-origin:10% 100%;transform:rotate(14deg);
   animation:tailSway 2.6s ease-in-out infinite;}
@@ -183,6 +188,7 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .cat.stage3 .cat-tail{animation:tailWag .5s ease-in-out infinite;}
 @keyframes tailWag{0%,100%{transform:rotate(22deg);}50%{transform:rotate(-18deg);}}
 
+/* fluffy round body */
 .cat-body{position:absolute;bottom:0;left:6%;width:88%;height:48%;z-index:2;
   background:radial-gradient(ellipse at 50% 20%, #fffdfb 0%, #f9ecec 55%, #f0d9dd 100%);
   border-radius:50% 50% 46% 46%;
@@ -192,14 +198,17 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .cat-body::before{left:2%;transform:rotate(-8deg);}
 .cat-body::after{right:2%;transform:rotate(8deg);}
 
+/* chest fluff ruff */
 .cat-ruff{position:absolute;bottom:14%;left:18%;width:64%;height:32%;z-index:3;
   background:radial-gradient(ellipse at 50% 0%, #ffffff 0%, #fbeef0 70%, transparent 100%);
   border-radius:50%;opacity:.9;}
 
+/* round Persian head (flat, wide face) */
 .cat-head{position:absolute;top:2%;left:10%;width:80%;height:64%;z-index:4;
   background:radial-gradient(ellipse at 42% 34%, #fffefc 0%, #fbecef 55%, #f1d7dc 100%);
   border-radius:50% 50% 46% 46%;
   box-shadow:inset 0 -8px 14px -6px rgba(183,110,121,.18);}
+/* Persian cats have a flatter, wider face w/ fluff tufts on cheeks */
 .cat-head::before,.cat-head::after{content:'';position:absolute;bottom:6%;width:26%;height:30%;border-radius:50%;
   background:radial-gradient(circle at 50% 40%, #fffefc, #f6dfe3 75%);}
 .cat-head::before{left:-6%;}
@@ -228,6 +237,7 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .cat.stage2 .cat-cheek,.cat.stage3 .cat-cheek{opacity:.7;}
 .cat.stage3 .cat-cheek{opacity:.95;}
 
+/* small flat Persian nose */
 .cat-nose{position:absolute;top:56%;left:50%;width:7%;height:5.5%;background:var(--rose-gold-dark);border-radius:40% 40% 50% 50%;transform:translateX(-50%);z-index:5;}
 .cat-mouth{position:absolute;top:63%;left:50%;width:18%;height:8%;border-bottom:2px solid var(--rose-gold-dark);border-radius:0 0 50% 50%;transform:translateX(-50%);z-index:5;transition:all .3s ease;}
 .cat.stage2 .cat-mouth,.cat.stage3 .cat-mouth{width:24%;height:13%;border-radius:0 0 50% 50%;border-bottom-width:2.5px;}
@@ -239,6 +249,7 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .cat-whisker.r1{right:0%;width:18%;transform:rotate(4deg);}
 .cat-whisker.r2{right:0%;top:63%;width:18%;}
 
+/* purring motion lines — only in stage3 */
 .cat-purr-line{position:absolute;border-radius:2px;background:rgba(183,110,121,.35);opacity:0;}
 .cat.stage3 .cat-purr-line{animation:purrPulse 1s ease-in-out infinite;}
 .cat-purr-line.p1{top:30%;left:-6%;width:10%;height:2px;animation-delay:0s;}
@@ -409,6 +420,7 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
 }
 
+/* Mobile safety: never allow sideways scroll, keep tap targets reachable */
 html,body{max-width:100%;overflow-x:hidden;}
 img,svg,canvas{max-width:100%;}
 @media(max-width:360px){
@@ -431,8 +443,8 @@ img,svg,canvas{max-width:100%;}
   <div class="bars"><span></span><span></span><span></span></div>
 </button>
 
-<!-- HTML5 Audio element for background music -->
-<audio id="bgm" src="Until.mp3" loop autoplay></audio>
+<!-- Hidden YouTube player used purely as an audio source for the instrumental track -->
+<div id="ytPlayer" style="position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;bottom:0;left:0;"></div>
 
 <div class="progress-dots" id="dots"></div>
 
@@ -620,45 +632,13 @@ This isn't a goodbye, just a little reminder that somewhere out here, someone is
 
 </main>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 (function(){
 "use strict";
 
 /* =========================================================
-   AUDIO CONTROLLER (Autoplay & Toggle)
-   ========================================================= */
-const audio = document.getElementById('bgm');
-const musicToggle = document.getElementById('musicToggle');
-
-function tryPlayAudio() {
-  if (audio.paused) {
-    audio.play().then(() => {
-      musicToggle.classList.remove('muted');
-    }).catch(() => {
-      // Browsers block unprompted audio; will play on first touch/click
-      musicToggle.classList.add('muted');
-    });
-  }
-}
-
-// Start audio immediately or on first user gesture
-tryPlayAudio();
-window.addEventListener('click', tryPlayAudio, { once: true });
-window.addEventListener('touchstart', tryPlayAudio, { once: true });
-
-musicToggle.addEventListener('click', (e) => {
-  e.stopPropagation();
-  if (audio.paused) {
-    audio.play();
-    musicToggle.classList.remove('muted');
-  } else {
-    audio.pause();
-    musicToggle.classList.add('muted');
-  }
-});
-
-/* =========================================================
-   EDITABLE TEXT CONFIG
+   EDITABLE TEXT CONFIG (change strings here)
    ========================================================= */
 const CONFIG = {
   typeText: "A little something I made before your new journey begins...",
@@ -718,7 +698,7 @@ document.addEventListener('click', function(e){
 });
 
 /* =========================================================
-   PIXEL SPRITE ENGINE
+   PIXEL SPRITE ENGINE (box-shadow technique)
    ========================================================= */
 function pixelShadow(pattern, colorMap, unit){
   const shadows = [];
@@ -764,12 +744,13 @@ const STAR_PATTERN = [
 ];
 const STAR_COLORS = { X:'#e8b4bc' };
 
+/* place a pixel heart into the certificate stamp + envelope seal */
 document.getElementById('pixelStampWrap').appendChild(makePixelSprite(HEART_PATTERN, HEART_COLORS, 7));
 const envSeal = document.getElementById('envSealPixel');
 envSeal.appendChild(makePixelSprite(HEART_PATTERN, HEART_COLORS, 6));
 
 /* =========================================================
-   BACKGROUND: petals / hearts / sparkles
+   BACKGROUND: petals / hearts / sparkles (canvas, no emoji)
    ========================================================= */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
@@ -890,14 +871,14 @@ window.addEventListener('load', ()=>{ setTimeout(()=>document.getElementById('lo
 setTimeout(()=>document.getElementById('loader').classList.add('hide'), 2500);
 
 /* =========================================================
-   PAGE 3: Persian cat inspection
+   PAGE 3: Persian cat inspection — three-stage tap interaction
    ========================================================= */
 const cat = document.getElementById('cat');
 const catBadge = document.getElementById('catBadge');
 const catHint = document.getElementById('catHint');
 const catBurst = document.getElementById('catBurst');
 const catStageLabel = document.getElementById('catStageLabel');
-let catStage = 0;
+let catStage = 0; // 0 = idle, 1 = noticed/blinked, 2 = happy, 3 = purring/final
 let blinkTimer;
 
 function blinkOnce(){
@@ -922,17 +903,20 @@ cat.addEventListener('click', ()=>{
   vibe(catStage===3 ? [12,25,12,25,20] : [8,20]);
 
   if(catStage===1){
+    // stage 1: cat notices and blinks deliberately
     cat.classList.add('blink');
     setTimeout(()=>cat.classList.remove('blink'), 220);
     catHint.classList.add('fade');
     catStageLabel.textContent = CONFIG.catStageLabels[1];
     catBurstAt(2);
   } else if(catStage===2){
+    // stage 2: cat becomes happy
     clearTimeout(blinkTimer);
     cat.classList.add('stage2');
     catStageLabel.textContent = CONFIG.catStageLabels[2];
     catBurstAt(4);
   } else if(catStage===3){
+    // stage 3: purrs, tail moves faster, hearts/stars burst
     cat.classList.remove('stage2');
     cat.classList.add('stage3');
     catStageLabel.textContent = CONFIG.catStageLabels[3];
@@ -970,7 +954,7 @@ meterBtn.addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 6: checklist
+   PAGE 6: checklist (gated continue)
    ========================================================= */
 const checklistEl = document.getElementById('checklist');
 CONFIG.checklistItems.forEach((txt,i)=>{
@@ -1009,7 +993,7 @@ document.getElementById('checklistContinue').addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 7: promise
+   PAGE 7: promise — NO button that never lands
    ========================================================= */
 const promiseCard = document.getElementById('promiseCard');
 const noBtn = document.getElementById('noBtn');
@@ -1125,7 +1109,7 @@ function playTearSound(){
     gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+0.35);
     noise.connect(filter); filter.connect(gain); gain.connect(actx.destination);
     noise.start(); noise.stop(actx.currentTime+0.35);
-  }catch(e){}
+  }catch(e){ /* audio not available */ }
 }
 
 function scatterScraps(){
@@ -1177,7 +1161,7 @@ function onPointerDown(e){
 function onPointerMove(e){
   if(!tearing || torn) return;
   const y = (e.touches ? e.touches[0].clientY : e.clientY);
-  const delta = dragStartY - y;
+  const delta = dragStartY - y; // upward drag = positive
   setTearProgress(delta / 130);
   if(delta > 130) finishTear();
 }
@@ -1197,7 +1181,7 @@ window.addEventListener('pointerup', onPointerUp);
 tearHandle.addEventListener('touchstart', onPointerDown, {passive:true});
 window.addEventListener('touchmove', onPointerMove, {passive:true});
 window.addEventListener('touchend', onPointerUp);
-
+/* fallback: a few quick taps also tears it open */
 let tapCount = 0;
 tearHandle.addEventListener('click', ()=>{
   if(torn) return;
@@ -1208,13 +1192,13 @@ tearHandle.addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 10: endless mini-game
+   PAGE 10: endless mini-game — pixel cat catches hearts/stars
    ========================================================= */
 const gameCanvas = document.getElementById('gameCanvas');
 const gctx = gameCanvas.getContext('2d');
 const scoreEl = document.getElementById('gameScore');
 let gW=0, gH=0, dpr=1;
-let catcherX = 0.5;
+let catcherX = 0.5; // fraction 0..1
 let items = [];
 let score = 0;
 let lastSpawn = 0;
@@ -1246,73 +1230,158 @@ function drawPixelStarCanvas(x,y,s,color){
   gctx.fillStyle = color;
   pat.forEach((row,ry)=>{ for(let rx=0;rx<row.length;rx++){ if(row[rx]!=='.') gctx.fillRect(x+rx*unit,y+ry*unit,unit+0.5,unit+0.5); } });
 }
-
-function updateGame(now){
-  if(!gameRunning) return;
-  gctx.clearRect(0,0,gW,gH);
-
-  if(now - lastSpawn > spawnInterval){
-    spawnItem();
-    lastSpawn = now;
-  }
-
+function drawCatcher(){
   const cw = 54, ch = 40;
   const cx = catcherX*gW - cw/2;
   const cy = gH - ch - 6;
-
+  // body
   gctx.fillStyle = '#f6dde1';
   gctx.beginPath();
   gctx.ellipse(cx+cw/2, cy+ch*0.62, cw*0.46, ch*0.42, 0, 0, Math.PI*2);
   gctx.fill();
+  // ears
+  gctx.fillStyle = '#f6dde1';
+  gctx.beginPath(); gctx.moveTo(cx+cw*0.18,cy+ch*0.32); gctx.lineTo(cx+cw*0.05,cy-ch*0.08); gctx.lineTo(cx+cw*0.34,cy+ch*0.18); gctx.closePath(); gctx.fill();
+  gctx.beginPath(); gctx.moveTo(cx+cw*0.82,cy+ch*0.32); gctx.lineTo(cx+cw*0.95,cy-ch*0.08); gctx.lineTo(cx+cw*0.66,cy+ch*0.18); gctx.closePath(); gctx.fill();
+  // inner ears
+  gctx.fillStyle = '#e8b4bc';
+  gctx.beginPath(); gctx.moveTo(cx+cw*0.20,cy+ch*0.26); gctx.lineTo(cx+cw*0.13,cy+ch*0.02); gctx.lineTo(cx+cw*0.30,cy+ch*0.18); gctx.closePath(); gctx.fill();
+  gctx.beginPath(); gctx.moveTo(cx+cw*0.80,cy+ch*0.26); gctx.lineTo(cx+cw*0.87,cy+ch*0.02); gctx.lineTo(cx+cw*0.70,cy+ch*0.18); gctx.closePath(); gctx.fill();
+  // face
+  gctx.fillStyle = '#fff9f7';
+  gctx.beginPath(); gctx.ellipse(cx+cw/2, cy+ch*0.42, cw*0.34, ch*0.32, 0, 0, Math.PI*2); gctx.fill();
+  // eyes
+  gctx.fillStyle = '#4a3540';
+  gctx.beginPath(); gctx.arc(cx+cw*0.4, cy+ch*0.4, 2.4, 0, Math.PI*2); gctx.fill();
+  gctx.beginPath(); gctx.arc(cx+cw*0.6, cy+ch*0.4, 2.4, 0, Math.PI*2); gctx.fill();
+  // nose
+  gctx.fillStyle = '#c96b78';
+  gctx.beginPath(); gctx.arc(cx+cw*0.5, cy+ch*0.48, 1.6, 0, Math.PI*2); gctx.fill();
+  return { x: cx, y: cy, w: cw, h: ch };
+}
 
-  for(let i=items.length-1; i>=0; i--){
+function gameLoop(ts){
+  if(!gameRunning) return;
+  gctx.clearRect(0,0,gW,gH);
+  if(ts - lastSpawn > spawnInterval){
+    spawnItem();
+    lastSpawn = ts;
+    spawnInterval = Math.max(480, spawnInterval - 6);
+  }
+  const catcher = drawCatcher();
+  for(let i=items.length-1;i>=0;i--){
     const it = items[i];
     it.y += it.speed;
-
-    if(it.kind==='heart') drawPixelHeartCanvas(it.x, it.y, it.size, '#c96b78');
-    else drawPixelStarCanvas(it.x, it.y, it.size, '#b76e79');
-
-    if(it.y + it.size >= cy && it.x >= cx - 10 && it.x <= cx + cw + 10){
+    if(it.kind==='heart') drawPixelHeartCanvas(it.x-it.size/2, it.y-it.size/2, it.size, '#e8b4bc');
+    else drawPixelStarCanvas(it.x-it.size/2, it.y-it.size/2, it.size, '#c9b8e8');
+    const caught = it.y > catcher.y-6 && it.y < catcher.y+catcher.h && it.x > catcher.x && it.x < catcher.x+catcher.w;
+    if(caught){
       score++;
       scoreEl.textContent = score;
-      burstAt(it.x + gameCanvas.getBoundingClientRect().left, it.y + gameCanvas.getBoundingClientRect().top, 3);
-      items.splice(i,1);
+      const canvasRect = gameCanvas.getBoundingClientRect();
+      burstAt(canvasRect.left+it.x, canvasRect.top+it.y, 4);
       vibe(6);
+      items.splice(i,1);
       continue;
     }
-
-    if(it.y > gH + 20) items.splice(i,1);
+    if(it.y > gH+20) items.splice(i,1);
   }
-
-  requestAnimationFrame(updateGame);
+  requestAnimationFrame(gameLoop);
 }
 
-function startGame(){
+function setCatcherFromClientX(clientX){
+  const rect = gameCanvas.getBoundingClientRect();
+  catcherX = Math.max(0, Math.min(1, (clientX-rect.left)/rect.width));
+}
+gameCanvas.addEventListener('pointerdown', e=>setCatcherFromClientX(e.clientX));
+gameCanvas.addEventListener('pointermove', e=>{ if(e.buttons>0 || e.pointerType==='touch') setCatcherFromClientX(e.clientX); });
+gameCanvas.addEventListener('touchmove', e=>{ if(e.touches[0]) setCatcherFromClientX(e.touches[0].clientX); }, {passive:true});
+window.addEventListener('keydown', e=>{
+  if(!gameRunning) return;
+  if(e.key==='ArrowLeft') catcherX = Math.max(0, catcherX-0.05);
+  if(e.key==='ArrowRight') catcherX = Math.min(1, catcherX+0.05);
+});
+
+function startGameIfNeeded(){
   if(gameStarted) return;
   gameStarted = true;
-  gameRunning = true;
   resizeGame();
-  requestAnimationFrame(updateGame);
+  gameRunning = true;
+  lastSpawn = performance.now();
+  requestAnimationFrame(gameLoop);
 }
-
-const observer = new MutationObserver(()=>{
-  if(pages[current].dataset.page === '10') startGame();
+/* start the endless game once its page becomes active */
+const gamePageObserver = new MutationObserver(()=>{
+  const gamePage = document.querySelector('.page[data-page="10"]');
+  if(gamePage.classList.contains('active')) startGameIfNeeded();
 });
-observer.observe(pages[9], { attributes: true });
+gamePageObserver.observe(document.querySelector('.page[data-page="10"]'), {attributes:true, attributeFilter:['class']});
 
-function moveCatcher(clientX){
-  const rect = gameCanvas.getBoundingClientRect();
-  let relX = (clientX - rect.left) / rect.width;
-  catcherX = Math.max(0.1, Math.min(0.9, relX));
+/* =========================================================
+   MUSIC: YouTube IFrame API used as an audio-only source
+   ("Until I Found You - Instrumental" — https://youtu.be/l6RBDcfxJac)
+   Handles autoplay restrictions by starting muted, then unmuting
+   and fading the volume in on the user's first tap/click/touch.
+   ========================================================= */
+const YT_VIDEO_ID = 'l6RBDcfxJac';
+const TARGET_VOLUME = 32; // 0-100, kept low + romantic
+let ytPlayer = null;
+let ytReady = false;
+let musicStarted = false;
+let musicMuted = false;
+
+window.onYouTubeIframeAPIReady = function(){
+  ytPlayer = new YT.Player('ytPlayer', {
+    height: '1', width: '1', videoId: YT_VIDEO_ID,
+    playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: YT_VIDEO_ID, playsinline: 1, disablekb: 1, fs: 0 },
+    events: {
+      onReady: function(ev){
+        ytReady = true;
+        try{ ev.target.setVolume(0); ev.target.playVideo(); }catch(e){}
+      },
+      onError: function(){ /* fail silently, never break the page */ }
+    }
+  });
+};
+
+function fadeInMusic(){
+  if(!ytPlayer || !ytReady) return;
+  try{
+    ytPlayer.unMute();
+    let v = 0;
+    const iv = setInterval(()=>{
+      v += 2;
+      try{ ytPlayer.setVolume(Math.min(TARGET_VOLUME, v)); }catch(e){}
+      if(v>=TARGET_VOLUME) clearInterval(iv);
+    }, 90);
+  }catch(e){}
 }
 
-gameCanvas.addEventListener('pointermove', e=>moveCatcher(e.clientX));
-gameCanvas.addEventListener('touchmove', e=>{ if(e.touches[0]) moveCatcher(e.touches[0].clientX); }, {passive:true});
+function startMusic(){
+  if(musicStarted) return;
+  musicStarted = true;
+  const tryStart = ()=>{
+    if(ytReady){ fadeInMusic(); }
+    else{ setTimeout(tryStart, 300); }
+  };
+  tryStart();
+  document.removeEventListener('click', startMusic);
+  document.removeEventListener('touchstart', startMusic);
+}
+document.addEventListener('click', startMusic, {once:true});
+document.addEventListener('touchstart', startMusic, {once:true});
 
-window.addEventListener('keydown', e=>{
-  if(pages[current].dataset.page !== '10') return;
-  if(e.key === 'ArrowLeft') catcherX = Math.max(0.1, catcherX - 0.05);
-  if(e.key === 'ArrowRight') catcherX = Math.min(0.9, catcherX + 0.05);
+/* manual music toggle, works even before the first tap above */
+const musicToggle = document.getElementById('musicToggle');
+musicToggle.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  startMusic();
+  if(!ytPlayer || !ytReady) return;
+  musicMuted = !musicMuted;
+  musicToggle.classList.toggle('muted', musicMuted);
+  try{
+    if(musicMuted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(TARGET_VOLUME); }
+  }catch(e){}
 });
 
 })();
