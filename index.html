@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You 🌸 | A Tiny Farewell Journey</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. VARIABLES & BASE STYLES
+       ========================================================================== */
+    :root {
+      --bg-cream: #FAF6F0;
+      --soft-pink: #F8E8EE;
+      --deep-pink: #F2C6DE;
+      --accent-rose: #E88D9E;
+      --soft-lavender: #E3DFFD;
+      --soft-sage: #E5EBB7;
+      --text-dark: #5C4B51;
+      --text-muted: #8C7A80;
+      --white-glass: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.8);
+      --glass-shadow: 0 15px 35px rgba(232, 141, 158, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Poppins', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background: linear-gradient(135deg, #FAF6F0 0%, #F8E8EE 50%, #E3DFFD 100%);
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ==========================================================================
+       2. AMBIENT BACKGROUND & PARTICLES
+       ========================================================================== */
+    #sakura-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .petal {
+      position: absolute;
+      background: linear-gradient(135deg, #ffd1dc, #f8e8ee);
+      border-radius: 15px 0 15px 0;
+      opacity: 0.7;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg) scale(0.8);
+        opacity: 0;
+      }
+      10% { opacity: 0.8; }
+      100% {
+        transform: translateY(105vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .sparkle-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #FFF;
+      box-shadow: 0 0 10px #F2C6DE, 0 0 20px #FFF;
+      pointer-events: none;
+      z-index: 9999;
+      animation: fadeSparkle 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeSparkle {
+      0% { transform: scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: scale(0) rotate(180deg); opacity: 0; }
+    }
+
+    /* Secret Easter Egg Star */
+    #easter-egg-star {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+      animation: glowPulse 2s infinite alternate;
+    }
+
+    #easter-egg-star:hover {
+      opacity: 1;
+      transform: scale(1.3) rotate(15deg);
+    }
+
+    @keyframes glowPulse {
+      0% { filter: drop-shadow(0 0 2px #E88D9E); }
+      100% { filter: drop-shadow(0 0 10px #E88D9E); }
+    }
+
+    /* Progress Bar */
+    #progress-container {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      z-index: 10;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--deep-pink), var(--accent-rose));
+      border-radius: 20px;
+      transition: width 0.4s ease;
+    }
+
+    /* Audio Toggle */
+    #audio-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--white-glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    #audio-toggle:hover { transform: scale(1.08); }
+
+    /* ==========================================================================
+       3. UI COMPONENTS & GLASS CARDS
+       ========================================================================== */
+    .glass-card {
+      background: var(--white-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow);
+      padding: 2.5rem 2rem;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Transitions */
+    .view-screen {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100vh;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.92) translateY(15px);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .view-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Typography */
+    h1, h2, h3 {
+      font-family: var(--font-heading);
+      color: var(--text-dark);
+      margin-bottom: 0.8rem;
+    }
+
+    h1 { font-size: 2.4rem; font-weight: 700; }
+    h2 { font-size: 1.8rem; }
+    
+    p {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+
+    .sub-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Buttons */
+    .btn {
+      background: linear-gradient(135deg, #FFF 0%, var(--soft-pink) 100%);
+      border: 1px solid var(--accent-rose);
+      color: var(--text-dark);
+      padding: 0.85rem 1.8rem;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(232, 141, 158, 0.2);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(232, 141, 158, 0.35);
+      background: linear-gradient(135deg, #FFF 0%, var(--deep-pink) 100%);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--deep-pink) 0%, var(--accent-rose) 100%);
+      color: white;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--accent-rose) 0%, #D87B8C 100%);
+    }
+
+    /* Cute SVG / Illustrations Containers */
+    .illustration-box {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    /* ==========================================================================
+       4. SECTION SPECIFIC STYLES
+       ========================================================================== */
+    /* Hero typing effect frame */
+    .typing-container {
+      min-height: 52px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Survival Kit Grid */
+    .kit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .kit-item {
+      background: rgba(255, 255, 255, 0.5);
+      padding: 10px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Final Checklist */
+    .checklist {
+      text-align: left;
+      margin-bottom: 1.5rem;
+      background: rgba(255,255,255,0.4);
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+      font-size: 0.92rem;
+    }
+
+    .btn-group-final {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+      min-height: 50px;
+    }
+
+    #btn-no {
+      position: absolute;
+      transition: all 0.15s ease-out;
+    }
+
+    /* Modal / Alert Overlay */
+    #custom-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(92, 75, 81, 0.25);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #custom-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Modal Card Structure */
+    .modal-card {
+      background: #FFF;
+      padding: 2rem;
+      border-radius: var(--radius-md);
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      transform: scale(0.8);
+      transition: transform 0.3s ease;
+    }
+
+    #custom-modal.active .modal-card {
+      transform: scale(1);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Background Sakura Canvas -->
+  <div id="sakura-container"></div>
+
+  <!-- Audio Toggle Button -->
+  <div id="audio-toggle" title="Toggle Soft Ambience Sound">
+    <span id="audio-icon">🎵</span>
+  </div>
+
+  <!-- Top Progress Bar -->
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- Hidden Secret Star -->
+  <div id="easter-egg-star" title="A secret?">✨</div>
+
+  <!-- ==========================================================================
+     HERO LANDING SCREEN
+     ========================================================================== -->
+  <section class="view-screen active" id="screen-hero">
+    <div class="glass-card">
+      <div class="illustration-box">🌸</div>
+      <h1>Hi, You</h1>
+      <div class="typing-container">
+        <p id="hero-typing"></p>
+      </div>
+      <button class="btn btn-primary" id="btn-start">✨ Begin</button>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     MISSION POPUPS (FLOW CARDS)
+     ========================================================================== -->
+  
+  <!-- Popup 1: Intro -->
+  <section class="view-screen" id="card-1">
+    <div class="glass-card">
+      <div class="illustration-box">🐱</div>
+      <h2>First of all...</h2>
+      <p>Congratulations.<br><br>I'm genuinely so proud of you. This is a huge, wonderful step in your life.</p>
+      <button class="btn btn-next">Continue →</button>
+    </div>
+  </section>
+
+  <!-- Popup 2: Mission 1 -->
+  <section class="view-screen" id="card-2">
+    <div class="glass-card">
+      <div class="illustration-box">🍱</div>
+      <h2>Mission #1</h2>
+      <p>Please eat your meals.<br>Even when university life gets chaotic, don't skip breakfast or lunch.</p>
+      <p class="sub-text">"Noodles are not a personality trait."</p>
+      <button class="btn btn-next">I'll eat properly</button>
+    </div>
+  </section>
+
+  <!-- Popup 3: Mission 2 -->
+  <section class="view-screen" id="card-3">
+    <div class="glass-card">
+      <div class="illustration-box">💧</div>
+      <h2>Mission #2</h2>
+      <p>Drink enough water.<br>Coffee is great, but coffee doesn't count towards hydration!</p>
+      <p class="sub-text">Your body deserves better care.</p>
+      <button class="btn btn-next">I promise</button>
+    </div>
+  </section>
+
+  <!-- Popup 4: Mission 3 -->
+  <section class="view-screen" id="card-4">
+    <div class="glass-card">
+      <div class="illustration-box">😴</div>
+      <h2>Mission #3</h2>
+      <p>Please get enough sleep.<br>Staying awake until 3 AM does not make assignments magically vanish.</p>
+      <p class="sub-text">Rest is productivity too.</p>
+      <button class="btn btn-next">Okay, I will</button>
+    </div>
+  </section>
+
+  <!-- Popup 5: Mission 4 -->
+  <section class="view-screen" id="card-5">
+    <div class="glass-card">
+      <div class="illustration-box">🌿</div>
+      <h2>Mission #4</h2>
+      <p>Explore. Meet new people. Take photos. Visit cozy cafés. Make unforgettable memories.</p>
+      <p class="sub-text">University is about life, not just grades.</p>
+      <button class="btn btn-next">I will!</button>
+    </div>
+  </section>
+
+  <!-- Popup 6: Interactive Cat Inspection -->
+  <section class="view-screen" id="card-cat">
+    <div class="glass-card">
+      <div class="illustration-box" id="cat-avatar">🐈</div>
+      <h2>CAT INSPECTION</h2>
+      <p id="cat-text">You cannot continue without petting the cat.</p>
+      <button class="btn" id="btn-pet-cat">🐾 Pet Cat</button>
+      <div style="margin-top: 15px;">
+        <button class="btn btn-next" id="btn-cat-continue" style="display: none;">Continue →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popup 7: Mindset Reminder -->
+  <section class="view-screen" id="card-reminder">
+    <div class="glass-card">
+      <div class="illustration-box">🌧️</div>
+      <h2>A Tiny Reminder</h2>
+      <p>If one day feels overwhelming or bad...</p>
+      <p>don't think your entire journey is bad. Bad days happen. Rest, breathe, and keep going.</p>
+      <button class="btn btn-next">Got it</button>
+    </div>
+  </section>
+
+  <!-- Popup 8: Survival Kit -->
+  <section class="view-screen" id="card-kit">
+    <div class="glass-card">
+      <div class="illustration-box">🎒</div>
+      <h2>Survival Kit</h2>
+      <p>Your official University Emergency Pack:</p>
+      <div class="kit-grid">
+        <div class="kit-item">☕ Coffee</div>
+        <div class="kit-item">🍫 Chocolate</div>
+        <div class="kit-item">😴 Sleep</div>
+        <div class="kit-item">💧 Water</div>
+      </div>
+      <div class="kit-item" style="margin-bottom: 1.5rem; justify-content: center;">😂 One silly friend (me)</div>
+      <button class="btn btn-next">Pack it up!</button>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     FINAL CHOICE SCREEN
+     ========================================================================== -->
+  <section class="view-screen" id="card-final">
+    <div class="glass-card">
+      <div class="illustration-box">💌</div>
+      <h2>One last promise...</h2>
+      <p>Will you promise to...</p>
+      
+      <div class="checklist">
+        <div class="check-item">🌸 Eat properly?</div>
+        <div class="check-item">🌸 Drink enough water?</div>
+        <div class="check-item">🌸 Sleep enough?</div>
+        <div class="check-item">🌸 Take care of yourself?</div>
+        <div class="check-item">🌸 Keep smiling?</div>
+      </div>
+
+      <div class="btn-group-final">
+        <button class="btn btn-primary" id="btn-yes">YES 💖</button>
+        <button class="btn" id="btn-no">NO 🙄</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     SUCCESS / OUTRO SCREEN
+     ========================================================================== -->
+  <section class="view-screen" id="card-success">
+    <div class="glass-card">
+      <div class="illustration-box">🎓✨</div>
+      <h2>Mission Complete</h2>
+      <p><strong>You are officially ready for your new adventure.</strong></p>
+      <p>I hope university gives you wonderful friends, unforgettable memories, and moments that make you smile every day.</p>
+      <p style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-rose);">I'm always cheering for you!</p>
+      <div style="font-size: 2rem; margin-top: 10px;">🌸</div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     CUSTOM DIALOG / MODAL (FOR EASTER EGG & NO BUTTON)
+     ========================================================================== -->
+  <div id="custom-modal">
+    <div class="modal-card">
+      <div id="modal-icon" style="font-size: 2.5rem; margin-bottom: 10px;">✨</div>
+      <p id="modal-text">Message here...</p>
+      <button class="btn" id="modal-close-btn">Close</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+     JAVASCRIPT LOGIC
+     ========================================================================== -->
+  <script>
+    /* --------------------------------------------------------------------------
+     * 1. STATE & DOM REFERENCES
+     * -------------------------------------------------------------------------- */
+    const screens = Array.from(document.querySelectorAll('.view-screen'));
+    let currentScreenIndex = 0;
+    
+    // Screens total for progress bar calculation
+    const totalMissions = screens.length - 2; // Exclude hero and success
+
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const modal = document.getElementById('custom-modal');
+    const modalText = document.getElementById('modal-text');
+    const modalIcon = document.getElementById('modal-icon');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    /* --------------------------------------------------------------------------
+     * 2. TYPING EFFECT FOR HERO SCREEN
+     * -------------------------------------------------------------------------- */
+    const typingText = "Before university gets busy...\nI wanted to leave you with something soft.";
+    const heroTypingElement = document.getElementById('hero-typing');
+    let charIndex = 0;
+
+    function typeHeroText() {
+      if (charIndex < typingText.length) {
+        let currentChar = typingText.charAt(charIndex);
+        if (currentChar === '\n') {
+          heroTypingElement.innerHTML += '<br>';
+        } else {
+          heroTypingElement.innerHTML += currentChar;
+        }
+        charIndex++;
+        setTimeout(typeHeroText, 55);
+      }
+    }
+    // Start typing after short delay
+    setTimeout(typeHeroText, 600);
+
+    /* --------------------------------------------------------------------------
+     * 3. SCREEN TRANSITION LOGIC
+     * -------------------------------------------------------------------------- */
+    function goToNextScreen() {
+      if (currentScreenIndex < screens.length - 1) {
+        screens[currentScreenIndex].classList.remove('active');
+        currentScreenIndex++;
+        screens[currentScreenIndex].classList.add('active');
+        
+        updateProgress();
+        triggerHaptic();
+      }
+    }
+
+    function updateProgress() {
+      if (currentScreenIndex > 0 && currentScreenIndex < screens.length - 1) {
+        progressContainer.style.opacity = '1';
+        const percentage = ((currentScreenIndex) / (screens.length - 2)) * 100;
+        progressBar.style.width = `${Math.min(percentage, 100)}%`;
+      } else {
+        progressContainer.style.opacity = '0';
+      }
+    }
+
+    // Attach listener to all standard Next buttons
+    document.querySelectorAll('.btn-next').forEach(btn => {
+      btn.addEventListener('click', goToNextScreen);
+    });
+
+    document.getElementById('btn-start').addEventListener('click', () => {
+      playSynthNote(440);
+      goToNextScreen();
+    });
+
+    /* --------------------------------------------------------------------------
+     * 4. PET CAT INTERACTION
+     * -------------------------------------------------------------------------- */
+    const petBtn = document.getElementById('btn-pet-cat');
+    const catContinueBtn = document.getElementById('btn-cat-continue');
+    const catAvatar = document.getElementById('cat-avatar');
+    const catText = document.getElementById('cat-text');
+    let isPet = false;
+
+    petBtn.addEventListener('click', (e) => {
+      if (!isPet) {
+        isPet = true;
+        catAvatar.innerText = "😸";
+        catText.innerHTML = "<em>*purrrrrr...*</em><br>Inspection passed! You may proceed.";
+        petBtn.style.display = 'none';
+        catContinueBtn.style.display = 'inline-flex';
+        
+        // Spawn heart burst around cat
+        createHeartBurst(e.clientX, e.clientY);
+        playSynthNote(587.33); // D5 note
+      }
+    });
+
+    /* --------------------------------------------------------------------------
+     * 5. RUNAWAY "NO" BUTTON LOGIC
+     * -------------------------------------------------------------------------- */
+    const noBtn = document.getElementById('btn-no');
+    const yesBtn = document.getElementById('btn-yes');
+    let noClickCount = 0;
+
+    function moveNoButton() {
+      const card = noBtn.closest('.glass-card');
+      const rect = card.getBoundingClientRect();
+      
+      // Calculate max bounds relative to card
+      const maxX = rect.width - noBtn.offsetWidth - 30;
+      const maxY = rect.height - noBtn.offsetHeight - 30;
+
+      const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.top = `${randomY}px`;
+    }
+
+    // Move on hover/touch hover
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    noBtn.addEventListener('click', () => {
+      noClickCount++;
+      showModal("😂", "Nice try! But 'NO' is not an option here.");
+      moveNoButton();
+    });
+
+    /* --------------------------------------------------------------------------
+     * 6. YES BUTTON & CELEBRATION
+     * -------------------------------------------------------------------------- */
+    yesBtn.addEventListener('click', () => {
+      playCelebration();
+      goToNextScreen();
+    });
+
+    function playCelebration() {
+      // Trigger canvas-confetti
+      if (typeof confetti === 'function') {
+        const duration = 3 * 1000;
+        const end = Date.now() + duration;
+
+        (function frame() {
+          confetti({
+            particleCount: 4,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#F8E8EE', '#F2C6DE', '#E88D9E', '#E3DFFD']
+          });
+          confetti({
+            particleCount: 4,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#F8E8EE', '#F2C6DE', '#E88D9E', '#E3DFFD']
+          });
+
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+     * 7. EASTER EGG & CUSTOM MODAL
+     * -------------------------------------------------------------------------- */
+    const star = document.getElementById('easter-egg-star');
+    star.addEventListener('click', () => {
+      showModal("⭐", "Aww... I knew you'd find this.<br><br>One more reminder:<br><strong>You are so much stronger than you think.</strong>");
+    });
+
+    function showModal(icon, text) {
+      modalIcon.innerHTML = icon;
+      modalText.innerHTML = text;
+      modal.classList.add('active');
+    }
+
+    modalCloseBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    /* --------------------------------------------------------------------------
+     * 8. VISUAL EFFECTS (Petals, Sparkle Trail)
+     * -------------------------------------------------------------------------- */
+    // Sakura Floating Petals
+    const sakuraContainer = document.getElementById('sakura-container');
+    const petalCount = 18;
+
+    for (let i = 0; i < petalCount; i++) {
+      createPetal();
+    }
+
+    function createPetal() {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      
+      const size = Math.random() * 12 + 8;
+      petal.style.width = `${size}px`;
+      petal.style.height = `${size * 1.2}px`;
+      petal.style.left = `${Math.random() * 100}%`;
+      petal.style.animationDuration = `${Math.random() * 5 + 6}s`;
+      petal.style.animationDelay = `${Math.random() * 5}s`;
+      
+      sakuraContainer.appendChild(petal);
+    }
+
+    // Sparkle trail on mouse move
+    window.addEventListener('mousemove', (e) => {
+      if (Math.random() < 0.25) { // Limit density
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle-trail';
+        sparkle.style.left = `${e.clientX}px`;
+        sparkle.style.top = `${e.clientY}px`;
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 800);
+      }
+    });
+
+    // Helper: Heart Burst Effect
+    function createHeartBurst(x, y) {
+      for (let i = 0; i < 8; i++) {
+        const heart = document.createElement('div');
+        heart.innerText = '💖';
+        heart.style.position = 'fixed';
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        heart.style.fontSize = '1.2rem';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '999';
+        heart.style.transition = 'all 0.8s ease-out';
+        
+        document.body.appendChild(heart);
+
+        const angle = (i / 8) * Math.PI * 2;
+        const velocity = 50 + Math.random() * 30;
+        const destX = x + Math.cos(angle) * velocity;
+        const destY = y + Math.sin(angle) * velocity;
+
+        setTimeout(() => {
+          heart.style.left = `${destX}px`;
+          heart.style.top = `${destY}px`;
+          heart.style.opacity = '0';
+          heart.style.transform = 'scale(0.5)';
+        }, 10);
+
+        setTimeout(() => heart.remove(), 800);
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+     * 9. AUDIO & UTILS (Web Audio API Synthesizer - No External Asset Depend)
+     * -------------------------------------------------------------------------- */
+    let audioCtx = null;
+    let isMuted = true;
+    const audioToggle = document.getElementById('audio-toggle');
+    const audioIcon = document.getElementById('audio-icon');
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    audioToggle.addEventListener('click', () => {
+      initAudio();
+      isMuted = !isMuted;
+      audioIcon.innerText = isMuted ? '🎵' : '🔊';
+      if (!isMuted) {
+        playSynthNote(523.25); // C5
+      }
+    });
+
+    function playSynthNote(freq) {
+      if (isMuted || !audioCtx) return;
+      
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.2);
+      } catch (e) {
+        // Fallback gracefully if browser restricts sound
+      }
+    }
+
+    function triggerHaptic() {
+      if ("vibrate" in navigator) {
+        navigator.vibrate(15);
+      }
+    }
+  </script>
+</body>
+</html>
