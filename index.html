@@ -45,9 +45,6 @@ button{font-family:'Poppins',sans-serif;border:none;background:none;}
 button, [role="button"]{-webkit-user-select:none;user-select:none;}
 ::selection{background:var(--rose-gold-light);color:var(--ink);}
 
-/* Force-lock the palette regardless of OS / browser dark mode.
-   Everything below simply re-declares the same light tokens inside
-   a prefers-color-scheme:dark query so nothing can flip. */
 @media (prefers-color-scheme: dark){
   :root{
     color-scheme: light only;
@@ -73,7 +70,7 @@ button, [role="button"]{-webkit-user-select:none;user-select:none;}
 }
 
 /* =========================================================
-   CSS-DRAWN ICONS (no emoji anywhere)
+   CSS-DRAWN ICONS
    ========================================================= */
 .icon-heart{position:relative;display:inline-block;width:1em;height:0.9em;transform:translateY(0.05em);}
 .icon-heart::before,.icon-heart::after{content:'';position:absolute;top:0;width:0.52em;height:0.82em;background:currentColor;border-radius:0.5em 0.5em 0 0;}
@@ -164,105 +161,111 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
 .typewrap{min-height:66px;}
 
 /* =========================================================
-   PAGE 3 — Persian cat sticker illustration
+   PAGE 3 — CUTE PERSIAN CAT ILLUSTRATION & PET MECHANIC
    ========================================================= */
-.cat-stage{margin:20px auto 6px;position:relative;width:min(64vw,240px);}
-.cat-tap-hint{font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-top:10px;opacity:.75;transition:opacity .3s ease;}
+.cat-stage{margin:18px auto 6px;position:relative;width:min(68vw,250px);}
+.cat-tap-hint{font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-top:12px;opacity:.85;transition:opacity .3s ease;}
 .cat-tap-hint.fade{opacity:0;}
-.cat{position:relative;width:100%;aspect-ratio:1/1;cursor:pointer;touch-action:manipulation;}
+.cat{position:relative;width:100%;aspect-ratio:1/1;cursor:pointer;touch-action:manipulation;user-select:none;}
 
-/* soft ground shadow */
-.cat-shadow{position:absolute;left:50%;bottom:2%;width:62%;height:8%;background:radial-gradient(ellipse at center, rgba(150,84,94,.25) 0%, transparent 75%);transform:translateX(-50%);z-index:0;}
+/* Ground Shadow */
+.cat-shadow{position:absolute;left:50%;bottom:2%;width:68%;height:9%;background:radial-gradient(ellipse at center, rgba(150,84,94,.28) 0%, transparent 75%);transform:translateX(-50%);z-index:0;}
 
-/* fluffy tail — layered puffs */
-.cat-tail{position:absolute;right:-4%;bottom:20%;width:32%;height:46%;z-index:1;
-  transform-origin:10% 100%;transform:rotate(14deg);
-  animation:tailSway 2.6s ease-in-out infinite;}
-.cat-tail .puff{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%, #fff, #f3dfe3 60%, #e8c7cd 100%);box-shadow:inset -3px -4px 6px rgba(183,110,121,.18);}
-.cat-tail .puff:nth-child(1){width:60%;height:46%;left:20%;bottom:0;}
-.cat-tail .puff:nth-child(2){width:52%;height:40%;left:26%;bottom:26%;}
-.cat-tail .puff:nth-child(3){width:42%;height:34%;left:30%;bottom:52%;}
-.cat-tail .puff:nth-child(4){width:30%;height:26%;left:34%;bottom:72%;}
-@keyframes tailSway{0%,100%{transform:rotate(10deg);}50%{transform:rotate(-10deg);}}
-.cat.stage2 .cat-tail,.cat.stage3 .cat-tail{animation:tailWag 1.1s ease-in-out infinite;}
-.cat.stage3 .cat-tail{animation:tailWag .5s ease-in-out infinite;}
-@keyframes tailWag{0%,100%{transform:rotate(22deg);}50%{transform:rotate(-18deg);}}
+/* Extra Fluffy Tail */
+.cat-tail{position:absolute;right:-6%;bottom:18%;width:36%;height:52%;z-index:1;
+  transform-origin:10% 90%;transform:rotate(12deg);
+  animation:tailSway 2.8s ease-in-out infinite;}
+.cat-tail .puff{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%, #ffffff, #f7ebed 65%, #eecbd1 100%);box-shadow:inset -2px -3px 5px rgba(183,110,121,.15);}
+.cat-tail .puff:nth-child(1){width:62%;height:48%;left:15%;bottom:0;}
+.cat-tail .puff:nth-child(2){width:54%;height:42%;left:22%;bottom:28%;}
+.cat-tail .puff:nth-child(3){width:46%;height:36%;left:28%;bottom:54%;}
+.cat-tail .puff:nth-child(4){width:36%;height:30%;left:32%;bottom:74%;}
+@keyframes tailSway{0%,100%{transform:rotate(8deg);}50%{transform:rotate(-12deg);}}
+.cat.stage2 .cat-tail,.cat.stage3 .cat-tail{animation:tailWag 0.9s ease-in-out infinite;}
+@keyframes tailWag{0%,100%{transform:rotate(20deg);}50%{transform:rotate(-15deg);}}
 
-/* fluffy round body */
-.cat-body{position:absolute;bottom:0;left:6%;width:88%;height:48%;z-index:2;
-  background:radial-gradient(ellipse at 50% 20%, #fffdfb 0%, #f9ecec 55%, #f0d9dd 100%);
-  border-radius:50% 50% 46% 46%;
-  box-shadow:inset 0 -10px 16px -8px rgba(183,110,121,.22);}
-.cat-body::before,.cat-body::after{content:'';position:absolute;bottom:6%;width:22%;height:34%;border-radius:50%;
-  background:radial-gradient(circle at 40% 30%, #fffdfb, #f3dee2 70%);}
-.cat-body::before{left:2%;transform:rotate(-8deg);}
-.cat-body::after{right:2%;transform:rotate(8deg);}
+/* Round Chubby Body */
+.cat-body{position:absolute;bottom:0;left:8%;width:84%;height:52%;z-index:2;
+  background:radial-gradient(ellipse at 50% 20%, #ffffff 0%, #faeff1 55%, #f2dbe0 100%);
+  border-radius:50% 50% 48% 48%;
+  box-shadow:inset 0 -10px 18px -8px rgba(183,110,121,.2);}
+/* Little Front Paws */
+.cat-paws{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:52%;height:22%;z-index:5;display:flex;justify-content:space-between;}
+.cat-paw{width:42%;height:100%;background:radial-gradient(circle at 50% 30%, #ffffff, #faeff1 80%);border-radius:50% 50% 45% 45%;box-shadow:0 3px 6px rgba(183,110,121,.15);}
 
-/* chest fluff ruff */
-.cat-ruff{position:absolute;bottom:14%;left:18%;width:64%;height:32%;z-index:3;
-  background:radial-gradient(ellipse at 50% 0%, #ffffff 0%, #fbeef0 70%, transparent 100%);
-  border-radius:50%;opacity:.9;}
+/* Fluffy Chest Ruff */
+.cat-ruff{position:absolute;bottom:18%;left:16%;width:68%;height:34%;z-index:3;
+  background:radial-gradient(ellipse at 50% 0%, #ffffff 0%, #fdf2f4 70%, transparent 100%);
+  border-radius:50%;}
 
-/* round Persian head (flat, wide face) */
-.cat-head{position:absolute;top:2%;left:10%;width:80%;height:64%;z-index:4;
-  background:radial-gradient(ellipse at 42% 34%, #fffefc 0%, #fbecef 55%, #f1d7dc 100%);
-  border-radius:50% 50% 46% 46%;
-  box-shadow:inset 0 -8px 14px -6px rgba(183,110,121,.18);}
-/* Persian cats have a flatter, wider face w/ fluff tufts on cheeks */
-.cat-head::before,.cat-head::after{content:'';position:absolute;bottom:6%;width:26%;height:30%;border-radius:50%;
-  background:radial-gradient(circle at 50% 40%, #fffefc, #f6dfe3 75%);}
-.cat-head::before{left:-6%;}
-.cat-head::after{right:-6%;}
+/* Extra Cute Persian Face */
+.cat-head{position:absolute;top:0%;left:8%;width:84%;height:68%;z-index:4;
+  background:radial-gradient(ellipse at 45% 35%, #ffffff 0%, #faeff1 55%, #f2dbe0 100%);
+  border-radius:52% 52% 48% 48%;
+  box-shadow:inset 0 -8px 14px -6px rgba(183,110,121,.16);
+  transition:transform .2s ease;}
 
-.cat-ear{position:absolute;top:-8%;width:28%;height:32%;z-index:3;
-  background:radial-gradient(circle at 40% 30%, #fbeced, #eec3cb 80%);
+/* Cheek Tufts for Persian Fluffiness */
+.cat-cheek-fluff{position:absolute;bottom:10%;width:28%;height:36%;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, #ffffff, #f7ebed 80%);}
+.cat-cheek-fluff.left{left:-8%;transform:rotate(-15deg);}
+.cat-cheek-fluff.right{right:-8%;transform:rotate(15deg);}
+
+/* Ears */
+.cat-ear{position:absolute;top:-6%;width:30%;height:34%;z-index:3;
+  background:radial-gradient(circle at 40% 30%, #fdf2f4, #eed3d8 85%);
   border-radius:60% 40% 60% 60%;}
-.cat-ear.left{left:2%;transform:rotate(-22deg);}
-.cat-ear.right{right:2%;transform:rotate(22deg) scaleX(-1);}
-.cat-ear-inner{position:absolute;top:30%;left:28%;width:46%;height:46%;background:var(--rose-gold-light);border-radius:60% 30% 60% 60%;opacity:.85;}
-.cat-ear-fluff{position:absolute;top:-10%;left:10%;width:80%;height:60%;
-  background:radial-gradient(circle, rgba(255,255,255,.9), transparent 70%);}
+.cat-ear.left{left:2%;transform:rotate(-20deg);}
+.cat-ear.right{right:2%;transform:rotate(20deg) scaleX(-1);}
+.cat-ear-inner{position:absolute;top:28%;left:25%;width:50%;height:50%;background:var(--rose-gold-light);border-radius:60% 30% 60% 60%;opacity:.8;}
 
-.cat-eye{position:absolute;top:42%;width:13%;height:16%;background:#4a3540;border-radius:50%;z-index:5;transition:transform .18s ease;}
-.cat-eye::after{content:'';position:absolute;top:18%;left:22%;width:32%;height:32%;background:rgba(255,255,255,.85);border-radius:50%;}
-.cat-eye.left{left:24%;}
-.cat-eye.right{right:24%;}
+/* Big Cute Anime/Chibi Eyes */
+.cat-eye{position:absolute;top:38%;width:17%;height:22%;background:#3d2b33;border-radius:50%;z-index:6;transition:all .2s ease;}
+.cat-eye::before{content:'';position:absolute;top:12%;left:18%;width:42%;height:42%;background:#ffffff;border-radius:50%;}
+.cat-eye::after{content:'';position:absolute;bottom:18%;right:18%;width:22%;height:22%;background:#ffffff;border-radius:50%;}
+.cat-eye.left{left:23%;}
+.cat-eye.right{right:23%;}
+
+/* Eye States for petting */
 .cat.blink .cat-eye{transform:scaleY(.08);}
-.cat.stage2 .cat-eye,.cat.stage3 .cat-eye{transform:scaleY(.35) translateY(6%);border-radius:0 0 50% 50%;}
-.cat.stage2 .cat-eye::after,.cat.stage3 .cat-eye::after{opacity:0;}
+.cat.stage2 .cat-eye, .cat.stage3 .cat-eye{
+  height:18%;border-radius:50% 50% 10% 10%;background:#3d2b33;
+}
+.cat.stage2 .cat-eye::before, .cat.stage3 .cat-eye::before{top:10%;left:20%;width:50%;height:50%;}
 
-.cat-cheek{position:absolute;top:56%;width:15%;height:10%;background:var(--rose-gold-light);border-radius:50%;opacity:0;filter:blur(.3px);transition:opacity .4s ease;z-index:4;}
-.cat-cheek.left{left:10%;}
-.cat-cheek.right{right:10%;}
-.cat.stage2 .cat-cheek,.cat.stage3 .cat-cheek{opacity:.7;}
-.cat.stage3 .cat-cheek{opacity:.95;}
+/* Cute Rosy Blush */
+.cat-cheek-blush{position:absolute;top:54%;width:22%;height:14%;background:linear-gradient(135deg, #f7a8b8, #e8b4bc);border-radius:50%;opacity:0.4;filter:blur(1px);z-index:5;transition:opacity .4s ease, transform .3s ease;}
+.cat-cheek-blush.left{left:10%;}
+.cat-cheek-blush.right{right:10%;}
+.cat.stage2 .cat-cheek-blush,.cat.stage3 .cat-cheek-blush{opacity:.85;transform:scale(1.15);}
 
-/* small flat Persian nose */
-.cat-nose{position:absolute;top:56%;left:50%;width:7%;height:5.5%;background:var(--rose-gold-dark);border-radius:40% 40% 50% 50%;transform:translateX(-50%);z-index:5;}
-.cat-mouth{position:absolute;top:63%;left:50%;width:18%;height:8%;border-bottom:2px solid var(--rose-gold-dark);border-radius:0 0 50% 50%;transform:translateX(-50%);z-index:5;transition:all .3s ease;}
-.cat.stage2 .cat-mouth,.cat.stage3 .cat-mouth{width:24%;height:13%;border-radius:0 0 50% 50%;border-bottom-width:2.5px;}
-.cat.stage3 .cat-mouth{width:26%;}
+/* Tiny Cute Button Nose & Mouth */
+.cat-nose{position:absolute;top:53%;left:50%;width:7.5%;height:5.5%;background:#b85c6d;border-radius:45% 45% 50% 50%;transform:translateX(-50%);z-index:6;}
+.cat-mouth{position:absolute;top:59%;left:50%;width:16%;height:9%;border-bottom:2px solid #b85c6d;border-radius:0 0 50% 50%;transform:translateX(-50%);z-index:6;transition:all .3s ease;}
+.cat.stage2 .cat-mouth,.cat.stage3 .cat-mouth{width:22%;height:14%;border-bottom-width:2.5px;border-radius:0 0 60% 60%;}
 
-.cat-whisker{position:absolute;top:58%;height:1.5px;background:rgba(90,63,69,.35);z-index:5;}
-.cat-whisker.l1{left:0%;width:18%;transform:rotate(-4deg);}
-.cat-whisker.l2{left:0%;top:63%;width:18%;}
-.cat-whisker.r1{right:0%;width:18%;transform:rotate(4deg);}
-.cat-whisker.r2{right:0%;top:63%;width:18%;}
+/* Little Whiskers */
+.cat-whisker{position:absolute;top:56%;height:1.5px;background:rgba(90,63,69,.25);z-index:5;}
+.cat-whisker.l1{left:-2%;width:18%;transform:rotate(-6deg);}
+.cat-whisker.l2{left:-2%;top:61%;width:18%;transform:rotate(2deg);}
+.cat-whisker.r1{right:-2%;width:18%;transform:rotate(6deg);}
+.cat-whisker.r2{right:-2%;top:61%;width:18%;transform:rotate(-2deg);}
 
-/* purring motion lines — only in stage3 */
-.cat-purr-line{position:absolute;border-radius:2px;background:rgba(183,110,121,.35);opacity:0;}
-.cat.stage3 .cat-purr-line{animation:purrPulse 1s ease-in-out infinite;}
-.cat-purr-line.p1{top:30%;left:-6%;width:10%;height:2px;animation-delay:0s;}
-.cat-purr-line.p2{top:36%;left:-9%;width:7%;height:2px;animation-delay:.15s;}
-.cat-purr-line.p3{top:30%;right:-6%;width:10%;height:2px;animation-delay:.3s;}
-.cat-purr-line.p4{top:36%;right:-9%;width:7%;height:2px;animation-delay:.45s;}
-@keyframes purrPulse{0%,100%{opacity:0;transform:translateX(0);}50%{opacity:.8;transform:translateX(-3px);}}
+/* Purr Motion Lines */
+.cat-purr-line{position:absolute;border-radius:2px;background:rgba(183,110,121,.4);opacity:0;}
+.cat.stage3 .cat-purr-line{animation:purrPulse 0.9s ease-in-out infinite;}
+.cat-purr-line.p1{top:28%;left:-8%;width:12%;height:2px;animation-delay:0s;}
+.cat-purr-line.p2{top:34%;left:-11%;width:8%;height:2px;animation-delay:.15s;}
+.cat-purr-line.p3{top:28%;right:-8%;width:12%;height:2px;animation-delay:.3s;}
+.cat-purr-line.p4{top:34%;right:-11%;width:8%;height:2px;animation-delay:.45s;}
+@keyframes purrPulse{0%,100%{opacity:0;transform:translateX(0);}50%{opacity:.85;transform:translateX(-3px);}}
+
+/* Petting Hand FX */
+.pet-heart-float{position:absolute;pointer-events:none;color:var(--rose-gold);font-size:16px;z-index:20;animation:floatUpHeart 0.9s ease-out forwards;}
+@keyframes floatUpHeart{0%{opacity:1;transform:translate(-50%, 0) scale(0.6) rotate(0deg);}100%{opacity:0;transform:translate(-50%, -45px) scale(1.2) rotate(15deg);}}
 
 .cat-sticker-burst{position:absolute;font-size:0;pointer-events:none;z-index:6;}
-.cat-sticker-burst span{position:absolute;display:block;width:14px;height:14px;color:var(--rose-gold);opacity:0;animation:stickerPop 1.1s ease forwards;}
-@keyframes stickerPop{0%{opacity:1;transform:translate(0,0) scale(.4) rotate(0deg);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(1.3) rotate(60deg);}}
-
-.badge{display:inline-block;margin-top:18px;padding:9px 20px;border-radius:999px;background:var(--lavender);color:var(--ink);
+.badge{display:inline-block;margin-top:16px;padding:9px 20px;border-radius:999px;background:var(--lavender);color:var(--ink);
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(8px);
   transition:all .5s cubic-bezier(.16,1,.3,1);}
 .badge.show{opacity:1;transform:translateY(0);}
@@ -420,7 +423,6 @@ p.lead{font-size:15px;line-height:1.8;color:var(--ink-soft);font-weight:300;marg
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
 }
 
-/* Mobile safety: never allow sideways scroll, keep tap targets reachable */
 html,body{max-width:100%;overflow-x:hidden;}
 img,svg,canvas{max-width:100%;}
 @media(max-width:360px){
@@ -443,8 +445,10 @@ img,svg,canvas{max-width:100%;}
   <div class="bars"><span></span><span></span><span></span></div>
 </button>
 
-<!-- Hidden YouTube player used purely as an audio source for the instrumental track -->
-<div id="ytPlayer" style="position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;bottom:0;left:0;"></div>
+<!-- HTML5 Audio Element using uploaded track -->
+<audio id="bgAudio" loop preload="auto">
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
 
 <div class="progress-dots" id="dots"></div>
 
@@ -470,11 +474,11 @@ img,svg,canvas{max-width:100%;}
     </div>
   </section>
 
-  <!-- PAGE 3: Persian cat inspection -->
+  <!-- PAGE 3: Cute Persian cat inspection & Petting -->
   <section class="page" data-page="3">
     <div class="card">
       <div class="eyebrow">university entry requirement</div>
-      <h1 class="title">You must pass the cat inspection.</h1>
+      <h1 class="title">You must pet the Persian kitty.</h1>
       <div class="cat-stage">
         <div class="cat-shadow"></div>
         <div class="cat" id="cat">
@@ -483,22 +487,28 @@ img,svg,canvas{max-width:100%;}
           <div class="cat-purr-line p3"></div><div class="cat-purr-line p4"></div>
           <div class="cat-body"></div>
           <div class="cat-ruff"></div>
-          <div class="cat-ear left"><div class="cat-ear-fluff"></div><div class="cat-ear-inner"></div></div>
-          <div class="cat-ear right"><div class="cat-ear-fluff"></div><div class="cat-ear-inner"></div></div>
-          <div class="cat-head">
+          <div class="cat-ear left"><div class="cat-ear-inner"></div></div>
+          <div class="cat-ear right"><div class="cat-ear-inner"></div></div>
+          <div class="cat-head" id="catHead">
+            <div class="cat-cheek-fluff left"></div>
+            <div class="cat-cheek-fluff right"></div>
             <div class="cat-whisker l1"></div><div class="cat-whisker l2"></div>
             <div class="cat-whisker r1"></div><div class="cat-whisker r2"></div>
             <div class="cat-eye left"></div>
             <div class="cat-eye right"></div>
-            <div class="cat-cheek left"></div>
-            <div class="cat-cheek right"></div>
+            <div class="cat-cheek-blush left"></div>
+            <div class="cat-cheek-blush right"></div>
             <div class="cat-nose"></div>
             <div class="cat-mouth"></div>
+          </div>
+          <div class="cat-paws">
+            <div class="cat-paw"></div>
+            <div class="cat-paw"></div>
           </div>
         </div>
         <div class="cat-sticker-burst" id="catBurst"></div>
       </div>
-      <p class="cat-tap-hint" id="catHint">tap the cat</p>
+      <p class="cat-tap-hint" id="catHint">gently pet the kitty</p>
       <p class="cat-stage-label" id="catStageLabel"></p>
       <div class="badge" id="catBadge">Certified Cat Approved</div>
       <div><button class="btn ghost" data-next id="catNext" style="display:none;">Continue</button></div>
@@ -632,13 +642,12 @@ This isn't a goodbye, just a little reminder that somewhere out here, someone is
 
 </main>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
 (function(){
 "use strict";
 
 /* =========================================================
-   EDITABLE TEXT CONFIG (change strings here)
+   CONFIG
    ========================================================= */
 const CONFIG = {
   typeText: "A little something I made before your new journey begins...",
@@ -656,7 +665,7 @@ const CONFIG = {
   ],
   incompleteNudges: [
     "You missed something",
-    "The cat noticed that...",
+    "The kitty noticed that...",
     "Try again, Simar",
     "Almost there..."
   ],
@@ -666,18 +675,18 @@ const CONFIG = {
     "Skill issue",
     "Nice try",
     "The button disagrees",
-    "Cat rejected this answer"
+    "Kitty rejected this answer"
   ],
   catStageLabels: [
     "",
-    "the cat notices you...",
-    "the cat is warming up...",
-    "purrfect. cat approved."
+    "the kitty leans into your hand...",
+    "soft purring fills the room...",
+    "purrfect! kitty is fully loved."
   ]
 };
 
 /* =========================================================
-   HAPTICS / RIPPLE HELPERS
+   HAPTICS / RIPPLE
    ========================================================= */
 function vibe(ms){ if(navigator.vibrate){ try{ navigator.vibrate(ms); }catch(e){} } }
 
@@ -698,7 +707,7 @@ document.addEventListener('click', function(e){
 });
 
 /* =========================================================
-   PIXEL SPRITE ENGINE (box-shadow technique)
+   PIXEL SPRITE ENGINE
    ========================================================= */
 function pixelShadow(pattern, colorMap, unit){
   const shadows = [];
@@ -744,13 +753,12 @@ const STAR_PATTERN = [
 ];
 const STAR_COLORS = { X:'#e8b4bc' };
 
-/* place a pixel heart into the certificate stamp + envelope seal */
 document.getElementById('pixelStampWrap').appendChild(makePixelSprite(HEART_PATTERN, HEART_COLORS, 7));
 const envSeal = document.getElementById('envSealPixel');
 envSeal.appendChild(makePixelSprite(HEART_PATTERN, HEART_COLORS, 6));
 
 /* =========================================================
-   BACKGROUND: petals / hearts / sparkles (canvas, no emoji)
+   BACKGROUND ANIMATION
    ========================================================= */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
@@ -871,14 +879,15 @@ window.addEventListener('load', ()=>{ setTimeout(()=>document.getElementById('lo
 setTimeout(()=>document.getElementById('loader').classList.add('hide'), 2500);
 
 /* =========================================================
-   PAGE 3: Persian cat inspection — three-stage tap interaction
+   PAGE 3: PET THE KITTY MECHANIC
    ========================================================= */
 const cat = document.getElementById('cat');
+const catHead = document.getElementById('catHead');
 const catBadge = document.getElementById('catBadge');
 const catHint = document.getElementById('catHint');
-const catBurst = document.getElementById('catBurst');
 const catStageLabel = document.getElementById('catStageLabel');
-let catStage = 0; // 0 = idle, 1 = noticed/blinked, 2 = happy, 3 = purring/final
+let catStage = 0;
+let petClicks = 0;
 let blinkTimer;
 
 function blinkOnce(){
@@ -891,41 +900,57 @@ function scheduleBlink(){
 }
 scheduleBlink();
 
-function catBurstAt(count){
+function spawnPetHeart(e){
   const rect = cat.getBoundingClientRect();
-  const cx = rect.left+rect.width/2, cy = rect.top+rect.height*0.32;
-  burstAt(cx,cy,count);
+  const x = e.clientX ? e.clientX : rect.left + rect.width/2;
+  const y = e.clientY ? e.clientY : rect.top + rect.height/3;
+  
+  const h = document.createElement('div');
+  h.className = 'pet-heart-float icon-heart';
+  h.style.left = x + 'px';
+  h.style.top = y + 'px';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), 900);
 }
 
-cat.addEventListener('click', ()=>{
-  if(catStage>=3) return;
-  catStage++;
-  vibe(catStage===3 ? [12,25,12,25,20] : [8,20]);
+function handlePet(e){
+  if(catStage >= 3) return;
+  
+  petClicks++;
+  spawnPetHeart(e);
+  
+  // Head tilt on pet
+  catHead.style.transform = `scale(0.96) translateY(4px) rotate(${petClicks % 2 === 0 ? 3 : -3}deg)`;
+  setTimeout(()=>{ catHead.style.transform = 'scale(1) translateY(0) rotate(0deg)'; }, 180);
 
-  if(catStage===1){
-    // stage 1: cat notices and blinks deliberately
+  if(petClicks === 1){
+    catStage = 1;
     cat.classList.add('blink');
     setTimeout(()=>cat.classList.remove('blink'), 220);
     catHint.classList.add('fade');
     catStageLabel.textContent = CONFIG.catStageLabels[1];
-    catBurstAt(2);
-  } else if(catStage===2){
-    // stage 2: cat becomes happy
+    vibe(12);
+  } else if(petClicks === 3){
+    catStage = 2;
     clearTimeout(blinkTimer);
     cat.classList.add('stage2');
     catStageLabel.textContent = CONFIG.catStageLabels[2];
-    catBurstAt(4);
-  } else if(catStage===3){
-    // stage 3: purrs, tail moves faster, hearts/stars burst
+    vibe([12, 20]);
+  } else if(petClicks >= 6){
+    catStage = 3;
     cat.classList.remove('stage2');
     cat.classList.add('stage3');
     catStageLabel.textContent = CONFIG.catStageLabels[3];
-    for(let i=0;i<6;i++){ setTimeout(()=>catBurstAt(1), i*90); }
-    catBurstAt(8);
     catBadge.classList.add('show');
-    document.getElementById('catNext').style.display='inline-flex';
+    document.getElementById('catNext').style.display = 'inline-flex';
+    vibe([15, 30, 15, 30, 25]);
+    
+    const rect = cat.getBoundingClientRect();
+    burstAt(rect.left + rect.width/2, rect.top + rect.height/3, 10);
   }
-});
+}
+
+cat.addEventListener('pointerdown', handlePet);
 
 /* =========================================================
    PAGE 4: smile check
@@ -954,7 +979,7 @@ meterBtn.addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 6: checklist (gated continue)
+   PAGE 6: checklist
    ========================================================= */
 const checklistEl = document.getElementById('checklist');
 CONFIG.checklistItems.forEach((txt,i)=>{
@@ -993,7 +1018,7 @@ document.getElementById('checklistContinue').addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 7: promise — NO button that never lands
+   PAGE 7: promise — NO button escaping
    ========================================================= */
 const promiseCard = document.getElementById('promiseCard');
 const noBtn = document.getElementById('noBtn');
@@ -1109,7 +1134,7 @@ function playTearSound(){
     gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+0.35);
     noise.connect(filter); filter.connect(gain); gain.connect(actx.destination);
     noise.start(); noise.stop(actx.currentTime+0.35);
-  }catch(e){ /* audio not available */ }
+  }catch(e){ }
 }
 
 function scatterScraps(){
@@ -1161,7 +1186,7 @@ function onPointerDown(e){
 function onPointerMove(e){
   if(!tearing || torn) return;
   const y = (e.touches ? e.touches[0].clientY : e.clientY);
-  const delta = dragStartY - y; // upward drag = positive
+  const delta = dragStartY - y;
   setTearProgress(delta / 130);
   if(delta > 130) finishTear();
 }
@@ -1181,7 +1206,7 @@ window.addEventListener('pointerup', onPointerUp);
 tearHandle.addEventListener('touchstart', onPointerDown, {passive:true});
 window.addEventListener('touchmove', onPointerMove, {passive:true});
 window.addEventListener('touchend', onPointerUp);
-/* fallback: a few quick taps also tears it open */
+
 let tapCount = 0;
 tearHandle.addEventListener('click', ()=>{
   if(torn) return;
@@ -1192,13 +1217,13 @@ tearHandle.addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 10: endless mini-game — pixel cat catches hearts/stars
+   PAGE 10: mini-game
    ========================================================= */
 const gameCanvas = document.getElementById('gameCanvas');
 const gctx = gameCanvas.getContext('2d');
 const scoreEl = document.getElementById('gameScore');
 let gW=0, gH=0, dpr=1;
-let catcherX = 0.5; // fraction 0..1
+let catcherX = 0.5;
 let items = [];
 let score = 0;
 let lastSpawn = 0;
@@ -1234,27 +1259,21 @@ function drawCatcher(){
   const cw = 54, ch = 40;
   const cx = catcherX*gW - cw/2;
   const cy = gH - ch - 6;
-  // body
   gctx.fillStyle = '#f6dde1';
   gctx.beginPath();
   gctx.ellipse(cx+cw/2, cy+ch*0.62, cw*0.46, ch*0.42, 0, 0, Math.PI*2);
   gctx.fill();
-  // ears
   gctx.fillStyle = '#f6dde1';
   gctx.beginPath(); gctx.moveTo(cx+cw*0.18,cy+ch*0.32); gctx.lineTo(cx+cw*0.05,cy-ch*0.08); gctx.lineTo(cx+cw*0.34,cy+ch*0.18); gctx.closePath(); gctx.fill();
   gctx.beginPath(); gctx.moveTo(cx+cw*0.82,cy+ch*0.32); gctx.lineTo(cx+cw*0.95,cy-ch*0.08); gctx.lineTo(cx+cw*0.66,cy+ch*0.18); gctx.closePath(); gctx.fill();
-  // inner ears
   gctx.fillStyle = '#e8b4bc';
   gctx.beginPath(); gctx.moveTo(cx+cw*0.20,cy+ch*0.26); gctx.lineTo(cx+cw*0.13,cy+ch*0.02); gctx.lineTo(cx+cw*0.30,cy+ch*0.18); gctx.closePath(); gctx.fill();
   gctx.beginPath(); gctx.moveTo(cx+cw*0.80,cy+ch*0.26); gctx.lineTo(cx+cw*0.87,cy+ch*0.02); gctx.lineTo(cx+cw*0.70,cy+ch*0.18); gctx.closePath(); gctx.fill();
-  // face
   gctx.fillStyle = '#fff9f7';
   gctx.beginPath(); gctx.ellipse(cx+cw/2, cy+ch*0.42, cw*0.34, ch*0.32, 0, 0, Math.PI*2); gctx.fill();
-  // eyes
   gctx.fillStyle = '#4a3540';
   gctx.beginPath(); gctx.arc(cx+cw*0.4, cy+ch*0.4, 2.4, 0, Math.PI*2); gctx.fill();
   gctx.beginPath(); gctx.arc(cx+cw*0.6, cy+ch*0.4, 2.4, 0, Math.PI*2); gctx.fill();
-  // nose
   gctx.fillStyle = '#c96b78';
   gctx.beginPath(); gctx.arc(cx+cw*0.5, cy+ch*0.48, 1.6, 0, Math.PI*2); gctx.fill();
   return { x: cx, y: cy, w: cw, h: ch };
@@ -1310,7 +1329,7 @@ function startGameIfNeeded(){
   lastSpawn = performance.now();
   requestAnimationFrame(gameLoop);
 }
-/* start the endless game once its page becomes active */
+
 const gamePageObserver = new MutationObserver(()=>{
   const gamePage = document.querySelector('.page[data-page="10"]');
   if(gamePage.classList.contains('active')) startGameIfNeeded();
@@ -1318,70 +1337,36 @@ const gamePageObserver = new MutationObserver(()=>{
 gamePageObserver.observe(document.querySelector('.page[data-page="10"]'), {attributes:true, attributeFilter:['class']});
 
 /* =========================================================
-   MUSIC: YouTube IFrame API used as an audio-only source
-   ("Until I Found You - Instrumental" — https://youtu.be/l6RBDcfxJac)
-   Handles autoplay restrictions by starting muted, then unmuting
-   and fading the volume in on the user's first tap/click/touch.
+   BACKGROUND AUDIO (HTML5 Audio)
    ========================================================= */
-const YT_VIDEO_ID = 'l6RBDcfxJac';
-const TARGET_VOLUME = 32; // 0-100, kept low + romantic
-let ytPlayer = null;
-let ytReady = false;
+const bgAudio = document.getElementById('bgAudio');
+const musicToggle = document.getElementById('musicToggle');
 let musicStarted = false;
 let musicMuted = false;
 
-window.onYouTubeIframeAPIReady = function(){
-  ytPlayer = new YT.Player('ytPlayer', {
-    height: '1', width: '1', videoId: YT_VIDEO_ID,
-    playerVars: { autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: YT_VIDEO_ID, playsinline: 1, disablekb: 1, fs: 0 },
-    events: {
-      onReady: function(ev){
-        ytReady = true;
-        try{ ev.target.setVolume(0); ev.target.playVideo(); }catch(e){}
-      },
-      onError: function(){ /* fail silently, never break the page */ }
-    }
-  });
-};
-
-function fadeInMusic(){
-  if(!ytPlayer || !ytReady) return;
-  try{
-    ytPlayer.unMute();
-    let v = 0;
-    const iv = setInterval(()=>{
-      v += 2;
-      try{ ytPlayer.setVolume(Math.min(TARGET_VOLUME, v)); }catch(e){}
-      if(v>=TARGET_VOLUME) clearInterval(iv);
-    }, 90);
-  }catch(e){}
+function playAudio(){
+  if(!musicStarted){
+    musicStarted = true;
+    bgAudio.play().then(()=>{
+      musicToggle.classList.remove('muted');
+    }).catch(err=>{
+      console.log("Audio playback error:", err);
+    });
+  }
 }
 
-function startMusic(){
-  if(musicStarted) return;
-  musicStarted = true;
-  const tryStart = ()=>{
-    if(ytReady){ fadeInMusic(); }
-    else{ setTimeout(tryStart, 300); }
-  };
-  tryStart();
-  document.removeEventListener('click', startMusic);
-  document.removeEventListener('touchstart', startMusic);
-}
-document.addEventListener('click', startMusic, {once:true});
-document.addEventListener('touchstart', startMusic, {once:true});
+document.addEventListener('click', playAudio, {once:true});
+document.addEventListener('touchstart', playAudio, {once:true});
 
-/* manual music toggle, works even before the first tap above */
-const musicToggle = document.getElementById('musicToggle');
 musicToggle.addEventListener('click', (e)=>{
   e.stopPropagation();
-  startMusic();
-  if(!ytPlayer || !ytReady) return;
+  if(!musicStarted){
+    playAudio();
+    return;
+  }
   musicMuted = !musicMuted;
+  bgAudio.muted = musicMuted;
   musicToggle.classList.toggle('muted', musicMuted);
-  try{
-    if(musicMuted){ ytPlayer.mute(); } else { ytPlayer.unMute(); ytPlayer.setVolume(TARGET_VOLUME); }
-  }catch(e){}
 });
 
 })();
