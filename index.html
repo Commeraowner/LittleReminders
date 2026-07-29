@@ -1192,7 +1192,7 @@ tearHandle.addEventListener('click', ()=>{
 });
 
 /* =========================================================
-   PAGE 10: endless mini-game — pixel cat catches hearts/stars
+   PAGE 10: endless mini-game — pixel cat catches hearts (Theme Updated to 2nd Image)
    ========================================================= */
 const gameCanvas = document.getElementById('gameCanvas');
 const gctx = gameCanvas.getContext('2d');
@@ -1216,15 +1216,11 @@ function resizeGame(){
 window.addEventListener('resize', ()=>{ if(gameStarted) resizeGame(); });
 
 function spawnItem(){
-  const kind = Math.random()>0.5 ? 'heart' : 'star';
   items.push({
-    kind,
     x: 0.1 + Math.random()*0.8,
     y: -0.05,
     speed: 0.0003 + Math.random()*0.00025,
-    size: 22,
-    rot: Math.random()*Math.PI*2,
-    rotSpeed: (Math.random()-0.5)*0.04
+    size: 20
   });
 }
 
@@ -1238,7 +1234,6 @@ function updateGame(now){
 
   items.forEach(it=>{
     it.y += it.speed * 16;
-    it.rot += it.rotSpeed;
   });
 
   const catY = 0.84;
@@ -1249,7 +1244,7 @@ function updateGame(now){
     const dy = it.y - catY;
     const dist = Math.hypot(dx, dy);
     if(dist < catR){
-      score += (it.kind==='heart' ? 10 : 15);
+      score += 10;
       scoreEl.textContent = score;
       vibe(12);
       burstAt(it.x*gW, it.y*gH, 4);
@@ -1263,59 +1258,107 @@ function updateGame(now){
   requestAnimationFrame(updateGame);
 }
 
+// Pixel Heart Pattern matching Image 2
+const PIXEL_HEART = [
+  ".11.11.",
+  "1111111",
+  "1111111",
+  ".11111.",
+  "..111..",
+  "...1..."
+];
+
+function drawPixelHeart(cx, cy, scale){
+  const color = '#e8b4bc';
+  const rows = PIXEL_HEART.length;
+  const cols = PIXEL_HEART[0].length;
+  const startX = cx - (cols * scale) / 2;
+  const startY = cy - (rows * scale) / 2;
+  
+  gctx.fillStyle = color;
+  for(let r=0; r<rows; r++){
+    for(let c=0; c<cols; c++){
+      if(PIXEL_HEART[r][c] === '1'){
+        gctx.fillRect(startX + c*scale, startY + r*scale, scale, scale);
+      }
+    }
+  }
+}
+
 function drawGame(){
   gctx.clearRect(0,0,gW,gH);
 
+  // Draw falling pixel hearts
   items.forEach(it=>{
     const px = it.x * gW, py = it.y * gH;
-    gctx.save();
-    gctx.translate(px, py);
-    gctx.rotate(it.rot);
-    if(it.kind==='heart'){
-      gctx.fillStyle='#c96b78';
-      const s = 10;
-      gctx.beginPath();
-      gctx.moveTo(0, s*0.35);
-      gctx.bezierCurveTo(-s, -s*0.6, -s*1.6, s*0.5, 0, s*1.4);
-      gctx.bezierCurveTo(s*1.6, s*0.5, s, -s*0.6, 0, s*0.35);
-      gctx.fill();
-    } else {
-      gctx.fillStyle='#e8b4bc';
-      const r = 8;
-      gctx.beginPath();
-      for(let k=0; k<5; k++){
-        const a1 = (k*72 - 90)*Math.PI/180;
-        const a2 = (k*72 + 36 - 90)*Math.PI/180;
-        gctx.lineTo(Math.cos(a1)*r, Math.sin(a1)*r);
-        gctx.lineTo(Math.cos(a2)*(r*0.45), Math.sin(a2)*(r*0.45));
-      }
-      gctx.closePath();
-      gctx.fill();
-    }
-    gctx.restore();
+    drawPixelHeart(px, py, 3);
   });
 
+  // Draw Cat Catcher (Matching Image 2 Theme)
   const cx = catcherX * gW;
-  const cy = 0.86 * gH;
-  const cw = Math.min(70, gW*0.18);
-  gctx.fillStyle='#fbecef';
+  const cy = 0.84 * gH;
+  const cw = Math.min(80, gW * 0.22);
+
+  gctx.save();
+
+  // 1. Pointy Ears (outer)
+  gctx.fillStyle = '#fce4ec';
   gctx.beginPath();
-  gctx.arc(cx, cy, cw*0.5, 0, Math.PI*2);
+  gctx.moveTo(cx - cw * 0.38, cy - cw * 0.05);
+  gctx.lineTo(cx - cw * 0.42, cy - cw * 0.45);
+  gctx.lineTo(cx - cw * 0.08, cy - cw * 0.18);
+  gctx.closePath();
   gctx.fill();
-  gctx.fillStyle='#eec3cb';
+
   gctx.beginPath();
-  gctx.arc(cx - cw*0.32, cy - cw*0.35, cw*0.18, 0, Math.PI*2);
-  gctx.arc(cx + cw*0.32, cy - cw*0.35, cw*0.18, 0, Math.PI*2);
+  gctx.moveTo(cx + cw * 0.38, cy - cw * 0.05);
+  gctx.lineTo(cx + cw * 0.42, cy - cw * 0.45);
+  gctx.lineTo(cx + cw * 0.08, cy - cw * 0.18);
+  gctx.closePath();
   gctx.fill();
-  gctx.fillStyle='#4a3540';
+
+  // Inner Pink Ears
+  gctx.fillStyle = '#f8bbd0';
   gctx.beginPath();
-  gctx.arc(cx - cw*0.16, cy - cw*0.05, cw*0.07, 0, Math.PI*2);
-  gctx.arc(cx + cw*0.16, cy - cw*0.05, cw*0.07, 0, Math.PI*2);
+  gctx.moveTo(cx - cw * 0.35, cy - cw * 0.08);
+  gctx.lineTo(cx - cw * 0.39, cy - cw * 0.38);
+  gctx.lineTo(cx - cw * 0.12, cy - cw * 0.18);
+  gctx.closePath();
   gctx.fill();
-  gctx.fillStyle='#96545e';
+
   gctx.beginPath();
-  gctx.arc(cx, cy + cw*0.08, cw*0.05, 0, Math.PI*2);
+  gctx.moveTo(cx + cw * 0.35, cy - cw * 0.08);
+  gctx.lineTo(cx + cw * 0.39, cy - cw * 0.38);
+  gctx.lineTo(cx + cw * 0.12, cy - cw * 0.18);
+  gctx.closePath();
   gctx.fill();
+
+  // 2. Wide Oval Face
+  gctx.fillStyle = '#fce4ec';
+  gctx.beginPath();
+  gctx.ellipse(cx, cy, cw * 0.44, cw * 0.28, 0, 0, Math.PI * 2);
+  gctx.fill();
+
+  // Inner Soft White/Pale Oval
+  gctx.fillStyle = '#ffffff';
+  gctx.beginPath();
+  gctx.ellipse(cx, cy + cw * 0.02, cw * 0.36, cw * 0.21, 0, 0, Math.PI * 2);
+  gctx.fill();
+
+  // 3. Eyes (Dark Round Dots)
+  gctx.fillStyle = '#3e2723';
+  gctx.beginPath();
+  gctx.arc(cx - cw * 0.13, cy - cw * 0.02, cw * 0.045, 0, Math.PI * 2);
+  gctx.arc(cx + cw * 0.13, cy - cw * 0.02, cw * 0.045, 0, Math.PI * 2);
+  gctx.fill();
+
+  // 4. Nose (Pink Oval Dot)
+  gctx.fillStyle = '#d81b60';
+  gctx.beginPath();
+  gctx.ellipse(cx, cy + cw * 0.04, cw * 0.035, cw * 0.025, 0, 0, Math.PI * 2);
+  gctx.fill();
+
+  gctx.restore();
 }
 
 function moveCatcher(clientX){
@@ -1377,4 +1420,3 @@ musicToggle.addEventListener("click", function(e){
 </script>
 </body>
 </html>
-
